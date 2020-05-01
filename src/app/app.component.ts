@@ -1,10 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'u235-vstar';
+  response = null;
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.http.get('/api/get-user2').subscribe(response => {
+      this.response = response;
+    });
+  }
 }
