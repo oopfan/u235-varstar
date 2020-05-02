@@ -1,6 +1,10 @@
 [
     {
         "session": "2020-04-19",
+        "filter": "L",
+        "exposure": "30",
+        "cstar": "UCAC4 633-050873",
+        "comment": "poor tracking, high rejection rate",
         "observations": [
             {"jd":"2458958.57998","mag":"10.747","err":"0.007"},
             {"jd":"2458958.58054","mag":"10.723","err":"0.007"},
@@ -88,6 +92,10 @@
     },
     {
         "session": "2020-04-23",
+        "filter": "L",
+        "exposure": "30",
+        "cstar": "UCAC4 633-050873",
+        "comment": "excellent tracking, keep all frames",
         "observations": [
             {"jd":"2458962.61620","mag":"10.732","err":"0.008"},
             {"jd":"2458962.61660","mag":"10.731","err":"0.008"},
@@ -319,6 +327,10 @@
     },
     {
         "session": "2020-04-29",
+        "filter": "L",
+        "exposure": "30",
+        "cstar": "UCAC4 633-050873",
+        "comment": "average tracking, half rejected",
         "observations": [
             {"jd":"2458968.56527","mag":"10.786","err":"0.009"},
             {"jd":"2458968.56565","mag":"10.771","err":"0.009"},

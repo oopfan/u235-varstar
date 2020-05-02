@@ -1,6 +1,10 @@
 [
     {
         "session": "2020-04-09",
+        "filter": "L",
+        "exposure": "50",
+        "cstar": "n/a",
+        "comment": "good tracking, 94% Moon nearby, increasing fog",
         "observations": [
             {"jd":"2458948.63846","mag":"10.524","err":"0.016"},
             {"jd":"2458948.63919","mag":"10.545","err":"0.016"},

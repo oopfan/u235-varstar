@@ -4,7 +4,7 @@ const got = require('got');
 // I need error handling!
 export default (req: NowRequest, res: NowResponse) => {
   (async () => {
-    const body = await got('https://oopfan.github.io/u235-vstar/gk-boo.json').json();
+    const body = await got('https://oopfan.github.io/u235-vstar/dir.json').json();
     res.json(body);
   })();
 }
