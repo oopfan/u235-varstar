@@ -12,6 +12,7 @@ export class VstarViewComponent implements OnInit {
   pageTitle = 'View Vstar';
   browserTitle = this.pageTitle + ' | U235+Vstar';
   directoryEntry = null;
+  observations = null;
 
   constructor(private titleService: Title, private activatedRoute: ActivatedRoute, private http: HttpClient) { }
 
@@ -23,6 +24,10 @@ export class VstarViewComponent implements OnInit {
       if (response[id] !== undefined) {
         this.directoryEntry = response[id];
       }
+    });
+
+    this.http.get('/api/get-obs?vstar=' + id).subscribe(response => {
+      this.observations = response;
     });
 
   }
