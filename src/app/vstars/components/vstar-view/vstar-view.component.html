@@ -1,0 +1,51 @@
+<section class="section" *ngIf="directoryEntry">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-three-fifths">
+                <h1 class="title is-5">{{ pageTitle }}</h1>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-three-fifths">
+                <label class="label">Star Name</label>
+                <div id="name">{{ directoryEntry.vstar }}</div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-three-fifths">
+                <label class="label">Variable Type</label>
+                <div id="name">{{ directoryEntry.vtype }}</div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-three-fifths">
+                <label class="label">Constellation</label>
+                <div id="name">{{ directoryEntry.constellation }}</div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-three-fifths">
+                <label class="label">Right Ascension (J2000)</label>
+                <div id="name">{{ directoryEntry.ra2000 }}</div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-three-fifths">
+                <label class="label">Declination (J2000)</label>
+                <div id="name">{{ directoryEntry.de2000 }}</div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-three-fifths">
+                <label class="label">Period (days)</label>
+                <div id="name">{{ directoryEntry.period }}</div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-three-fifths">
+                <label class="label">Epoch (JD)</label>
+                <div id="name">{{ directoryEntry.epoch }}</div>
+            </div>
+        </div>
+    </div>
+</section>
