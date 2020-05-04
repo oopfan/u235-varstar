@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { VstarOverviewService} from '@core/services';
 
 @Component({
   selector: 'app-vstar-overview',
@@ -9,17 +9,14 @@ import { HttpClient } from '@angular/common/http';
 })
 export class VstarOverviewComponent implements OnInit {
   id = null;
-  directoryEntry = null;
+  overview = null;
 
-  constructor(private activatedRoute: ActivatedRoute, private http: HttpClient) { }
+  constructor(private activatedRoute: ActivatedRoute, private service: VstarOverviewService) { }
 
   ngOnInit(): void {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-
-    this.http.get('/api/get-dir').subscribe(response => {
-      if (response[this.id] !== undefined) {
-        this.directoryEntry = response[this.id];
-      }
+    this.service.get(this.id).subscribe(overview => {
+      this.overview = overview;
     });
   }
 

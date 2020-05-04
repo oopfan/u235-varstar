@@ -7,47 +7,47 @@
     </ul>
 </div>
 <div class="container">
-    <ng-container *ngIf="directoryEntry">
+    <ng-container *ngIf="overview">
         <div class="columns">
             <div class="column">
                 <div class="label">Star Name</div>
-                <div>{{ directoryEntry.vstar }}</div>
+                <div>{{ overview.vstar }}</div>
             </div>
         </div>
         <div class="columns">
             <div class="column">
                 <div class="label">Variable Type</div>
-                <div>{{ directoryEntry.vtype }}</div>
+                <div>{{ overview.vtype }}</div>
             </div>
         </div>
         <div class="columns">
             <div class="column">
                 <div class="label">Constellation</div>
-                <div>{{ directoryEntry.constellation }}</div>
+                <div>{{ overview.constellation }}</div>
             </div>
         </div>
         <div class="columns">
             <div class="column">
                 <div class="label">Right Ascension (J2000)</div>
-                <div>{{ directoryEntry.ra2000 }}</div>
+                <div>{{ overview.ra2000 }}</div>
             </div>
         </div>
         <div class="columns">
             <div class="column">
                 <div class="label">Declination (J2000)</div>
-                <div>{{ directoryEntry.de2000 }}</div>
+                <div>{{ overview.de2000 }}</div>
             </div>
         </div>
         <div class="columns">
             <div class="column">
                 <div class="label">Period (days)</div>
-                <div>{{ directoryEntry.period }}</div>
+                <div>{{ overview.period }}</div>
             </div>
         </div>
         <div class="columns">
             <div class="column">
                 <div class="label">Epoch (JD)</div>
-                <div>{{ directoryEntry.epoch }}</div>
+                <div>{{ overview.epoch }}</div>
             </div>
         </div>
     </ng-container>
