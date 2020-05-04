@@ -17,18 +17,18 @@ export class VstarViewComponent implements OnInit {
   constructor(private titleService: Title, private activatedRoute: ActivatedRoute, private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.browserTitle);
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    // this.titleService.setTitle(this.browserTitle);
+    // const id = this.activatedRoute.snapshot.paramMap.get('id');
 
-    this.http.get('/api/get-dir').subscribe(response => {
-      if (response[id] !== undefined) {
-        this.directoryEntry = response[id];
-      }
-    });
+    // this.http.get('/api/get-dir').subscribe(response => {
+    //   if (response[id] !== undefined) {
+    //     this.directoryEntry = response[id];
+    //   }
+    // });
 
-    this.http.get('/api/get-obs?vstar=' + id).subscribe(response => {
-      this.observations = response;
-    });
+    // this.http.get('/api/get-obs?vstar=' + id).subscribe(response => {
+    //   this.observations = response;
+    // });
 
   }
 

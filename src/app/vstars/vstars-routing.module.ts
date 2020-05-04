@@ -4,7 +4,10 @@ import * as fromComponents from './components';
 
 export const routes: Routes = [
   { path: 'vstars', component: fromComponents.VstarsHomeComponent },
-  { path: 'view-vstar/:id', component: fromComponents.VstarViewComponent },
+  { path: 'vstar-overview/:id', component: fromComponents.VstarOverviewComponent },
+  { path: 'vstar-observations/:id', component: fromComponents.VstarObservationsComponent },
+  { path: 'vstar-light-curve/:id', component: fromComponents.VstarLightCurveComponent },
+  { path: 'vstar-phase-plot/:id', component: fromComponents.VstarPhasePlotComponent },
 ];
 
 @NgModule({
