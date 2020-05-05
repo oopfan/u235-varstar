@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChartsModule } from 'ng2-charts';
 
 import * as fromComponents from './components';
 import { VstarsRoutingModule } from './vstars-routing.module';
@@ -8,6 +9,7 @@ import { VstarsRoutingModule } from './vstars-routing.module';
   declarations: [ ...fromComponents.components ],
   imports: [
     CommonModule,
+    ChartsModule,
     VstarsRoutingModule
   ]
 })

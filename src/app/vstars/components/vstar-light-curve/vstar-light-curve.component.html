@@ -11,6 +11,15 @@
                 </ul>
             </div>
         </ng-container>
-        <h1 class="subtitle">Under Construction</h1>
+        <div class="chart-wrapper" *ngIf="lineChartData.length > 0">
+            <canvas baseChart 
+                [datasets]="lineChartData" 
+                [options]="lineChartOptions"
+                [colors]="lineChartColors" 
+                [legend]="lineChartLegend" 
+                [chartType]="lineChartType" 
+                [plugins]="lineChartPlugins">
+            </canvas>
+        </div>
     </div>
 </section>
