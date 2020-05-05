@@ -18,7 +18,7 @@ export class VstarPhasePlotComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.overviewService.get(this.id).subscribe(overview => {
+    this.overviewService.getById(this.id).subscribe(overview => {
       this.overview = overview;
     });
   }

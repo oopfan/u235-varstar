@@ -7,18 +7,20 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { VstarsModule } from './vstars/vstars.module';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavBarComponent
+    NavBarComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
     CoreModule,
-    VstarsModule
+    VstarsModule,
+    AppRoutingModule
   ],
   providers: [Title],
   bootstrap: [AppComponent]

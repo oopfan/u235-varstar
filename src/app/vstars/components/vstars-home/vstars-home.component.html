@@ -1,1 +1,25 @@
-<p>vstars-home works!</p>
+<section class="section">
+    <div class="container">
+        <ng-container *ngIf="overviews">
+            <h1 class="title is-4">Variable Stars</h1>
+            <div class="columns">
+                <div class="column">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let id of overviewIds">
+                                <td>{{ overviews[id].vstar }}</td>
+                                <td><a [routerLink]="['/vstar-overview', id]">View</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</section>

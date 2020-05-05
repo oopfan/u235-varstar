@@ -11,7 +11,19 @@ export class VstarOverviewService {
 
   constructor(private http: HttpClient) { }
 
-  get(id: string) {
+  getAll() {
+    if (this.cache) {
+      return new Observable(subscriber => {
+        subscriber.next(this.cache);
+      });
+    }
+    return this.http.get('https://oopfan.github.io/u235-vstar/dir.json').pipe(map(value => {
+      this.cache = value;
+      return value;
+    }));
+  }
+
+  getById(id: string) {
     if (this.cache) {
       return new Observable(subscriber => {
         subscriber.next(this.cache[id]);

@@ -15,7 +15,7 @@ export class VstarOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.service.get(this.id).subscribe(overview => {
+    this.service.getById(this.id).subscribe(overview => {
       this.overview = overview;
     });
   }
