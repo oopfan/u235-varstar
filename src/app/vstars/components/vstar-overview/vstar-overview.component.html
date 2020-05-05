@@ -1,54 +1,51 @@
-<div class="tabs">
-    <ul>
-        <li routerLinkActive="is-active"><a [routerLink]="['/vstar-overview', id]">Overview</a></li>
-        <li routerLinkActive="is-active"><a [routerLink]="['/vstar-observations', id]">Observations</a></li>
-        <li routerLinkActive="is-active"><a [routerLink]="['/vstar-light-curve', id]">Light Curve</a></li>
-        <li routerLinkActive="is-active"><a [routerLink]="['/vstar-phase-plot', id]">Phase Plot</a></li>
-    </ul>
-</div>
-<div class="container">
-    <ng-container *ngIf="overview">
-        <div class="columns">
-            <div class="column">
-                <div class="label">Star Name</div>
-                <div>{{ overview.vstar }}</div>
+<section class="section">
+    <div class="container">
+        <ng-container *ngIf="overview">
+            <h1 class="title is-4">{{ overview.vstar }}</h1>
+            <div class="tabs">
+                <ul>
+                    <li routerLinkActive="is-active"><a [routerLink]="['/vstar-overview', id]">Overview</a></li>
+                    <li routerLinkActive="is-active"><a [routerLink]="['/vstar-observations', id]">Observations</a></li>
+                    <li routerLinkActive="is-active"><a [routerLink]="['/vstar-light-curve', id]">Light Curve</a></li>
+                    <li routerLinkActive="is-active"><a [routerLink]="['/vstar-phase-plot', id]">Phase Plot</a></li>
+                </ul>
             </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="label">Variable Type</div>
-                <div>{{ overview.vtype }}</div>
+            <div class="columns">
+                <div class="column">
+                    <div class="label">Variable Type</div>
+                    <div>{{ overview.vtype }}</div>
+                </div>
             </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="label">Constellation</div>
-                <div>{{ overview.constellation }}</div>
+            <div class="columns">
+                <div class="column">
+                    <div class="label">Constellation</div>
+                    <div>{{ overview.constellation }}</div>
+                </div>
             </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="label">Right Ascension (J2000)</div>
-                <div>{{ overview.ra2000 }}</div>
+            <div class="columns">
+                <div class="column">
+                    <div class="label">Right Ascension (J2000)</div>
+                    <div>{{ overview.ra2000 }}</div>
+                </div>
             </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="label">Declination (J2000)</div>
-                <div>{{ overview.de2000 }}</div>
+            <div class="columns">
+                <div class="column">
+                    <div class="label">Declination (J2000)</div>
+                    <div>{{ overview.de2000 }}</div>
+                </div>
             </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="label">Period (days)</div>
-                <div>{{ overview.period }}</div>
+            <div class="columns">
+                <div class="column">
+                    <div class="label">Period (days)</div>
+                    <div>{{ overview.period }}</div>
+                </div>
             </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="label">Epoch (JD)</div>
-                <div>{{ overview.epoch }}</div>
+            <div class="columns">
+                <div class="column">
+                    <div class="label">Epoch (JD)</div>
+                    <div>{{ overview.epoch }}</div>
+                </div>
             </div>
-        </div>
-    </ng-container>
-</div>
+        </ng-container>
+    </div>
+</section>

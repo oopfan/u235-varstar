@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { VstarObservationsService } from '@core/services';
+import { VstarOverviewService, VstarObservationsService } from '@core/services';
 
 @Component({
   selector: 'app-vstar-observations',
@@ -9,13 +9,20 @@ import { VstarObservationsService } from '@core/services';
 })
 export class VstarObservationsComponent implements OnInit {
   id = null;
+  overview = null;
   observations = null;
 
-  constructor(private activatedRoute: ActivatedRoute, private service: VstarObservationsService) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private overviewService: VstarOverviewService,
+    private observationsService: VstarObservationsService) { }
 
   ngOnInit(): void {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.service.get(this.id).subscribe(observations => {
+    this.overviewService.get(this.id).subscribe(overview => {
+      this.overview = overview;
+    });
+    this.observationsService.get(this.id).subscribe(observations => {
       this.observations = observations;
     });
   }
