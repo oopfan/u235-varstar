@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VarStarObservationsService, Session } from '@core/services';
@@ -8,13 +9,16 @@ import { VarStarObservationsService, Session } from '@core/services';
   styleUrls: ['./varstar-observations.component.css']
 })
 export class VarStarObservationsComponent implements OnInit {
+  browserTitle = 'Observations | U235-VarStar';
   observations: Session[] = [];
 
   constructor(
+    private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private observationsService: VarStarObservationsService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle(this.browserTitle);
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     this.observationsService.getById(id).subscribe(observations => {
       this.observations = observations;

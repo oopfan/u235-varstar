@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VarStarObservationsService, Session } from '@core/services';
@@ -10,6 +11,7 @@ import { Color } from 'ng2-charts';
   styleUrls: ['./varstar-light-curve.component.css']
 })
 export class VarStarLightCurveComponent implements OnInit {
+  browserTitle = 'Light Curve | U235-VarStar';
   observations: Session[] = [];
 
   lineChartData = [];
@@ -86,10 +88,12 @@ export class VarStarLightCurveComponent implements OnInit {
   }
 
   constructor(
+    private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private observationsService: VarStarObservationsService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle(this.browserTitle);
     this.calculateChart();
 
     const id = this.activatedRoute.snapshot.paramMap.get('id');

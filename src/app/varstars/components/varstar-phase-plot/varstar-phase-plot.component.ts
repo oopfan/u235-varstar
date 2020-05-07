@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VarStarOverviewService, VarStarObservationsService, Overview, Session } from '@core/services';
@@ -18,6 +19,7 @@ function Phase2(phase1: number): number {
   styleUrls: ['./varstar-phase-plot.component.css']
 })
 export class VarStarPhasePlotComponent implements OnInit {
+  browserTitle = 'Phase Plot | U235-VarStar';
   overview: Overview = null;
   observations: Session[] = [];
 
@@ -109,11 +111,13 @@ export class VarStarPhasePlotComponent implements OnInit {
   }
 
   constructor(
+    private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private overviewService: VarStarOverviewService,
     private observationsService: VarStarObservationsService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle(this.browserTitle);
     this.calculateChart();
 
     const id = this.activatedRoute.snapshot.paramMap.get('id');
