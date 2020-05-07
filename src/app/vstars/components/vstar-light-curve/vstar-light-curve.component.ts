@@ -46,7 +46,6 @@ export class VstarLightCurveComponent implements OnInit {
   lineChartType = 'scatterWithErrorBars';
 
   calculateChart() {
-    errorBars.defaults = 
     this.lineChartData = [];
     this.lineChartColors = [];
     if (this.observations !== null) {

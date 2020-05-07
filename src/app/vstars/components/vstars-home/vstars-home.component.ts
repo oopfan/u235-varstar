@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { VstarOverviewService } from '@core/services';
+import { VstarOverviewService, Overviews } from '@core/services';
 
 @Component({
   selector: 'app-vstars-home',
@@ -7,7 +7,7 @@ import { VstarOverviewService } from '@core/services';
   styleUrls: ['./vstars-home.component.css']
 })
 export class VstarsHomeComponent implements OnInit {
-  overviews = null;
+  overviews: Overviews = null;
   overviewIds = [];
 
   constructor(private overviewService: VstarOverviewService) { }

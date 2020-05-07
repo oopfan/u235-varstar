@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { VstarOverviewService, VstarObservationsService } from '@core/services';
+import { VstarOverviewService, VstarObservationsService, Overview, Session } from '@core/services';
 
 @Component({
   selector: 'app-vstar-observations',
@@ -9,8 +9,8 @@ import { VstarOverviewService, VstarObservationsService } from '@core/services';
 })
 export class VstarObservationsComponent implements OnInit {
   id = null;
-  overview = null;
-  observations = null;
+  overview: Overview = null;
+  observations: Session[] = null;
 
   constructor(
     private activatedRoute: ActivatedRoute,
