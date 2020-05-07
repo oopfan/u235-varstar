@@ -1,0 +1,25 @@
+<section class="section">
+    <div class="container">
+        <ng-container *ngIf="overview">
+            <h1 class="title is-4">{{ overview.varstar }}</h1>
+            <div class="tabs">
+                <ul>
+                    <li routerLinkActive="is-active"><a [routerLink]="['/varstar-overview', id]">Overview</a></li>
+                    <li routerLinkActive="is-active"><a [routerLink]="['/varstar-observations', id]">Observations</a></li>
+                    <li routerLinkActive="is-active"><a [routerLink]="['/varstar-light-curve', id]">Light Curve</a></li>
+                    <li routerLinkActive="is-active"><a [routerLink]="['/varstar-phase-plot', id]">Phase Plot</a></li>
+                </ul>
+            </div>
+        </ng-container>
+        <div class="chart-wrapper" *ngIf="lineChartData.length > 0">
+            <canvas baseChart 
+                [datasets]="lineChartData" 
+                [options]="lineChartOptions"
+                [colors]="lineChartColors" 
+                [legend]="lineChartLegend" 
+                [chartType]="lineChartType" 
+                [plugins]="lineChartPlugins">
+            </canvas>
+        </div>
+    </div>
+</section>

@@ -1,10 +1,10 @@
-import { VstarOverviewService } from './vstar-overview/vstar-overview.service';
-import { VstarObservationsService } from './vstar-observations/vstar-observations.service';
+import { VarStarOverviewService } from './varstar-overview/varstar-overview.service';
+import { VarStarObservationsService } from './varstar-observations/varstar-observations.service';
 
 export const services: any[] = [
-    VstarOverviewService,
-    VstarObservationsService
+    VarStarOverviewService,
+    VarStarObservationsService
 ];
 
-export * from './vstar-overview/vstar-overview.service';
-export * from './vstar-observations/vstar-observations.service';
+export * from './varstar-overview/varstar-overview.service';
+export * from './varstar-observations/varstar-observations.service';

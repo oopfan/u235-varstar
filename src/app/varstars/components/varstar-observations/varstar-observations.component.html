@@ -1,0 +1,69 @@
+<section class="section">
+    <div class="container">
+        <ng-container *ngIf="overview">
+            <h1 class="title is-4">{{ overview.varstar }}</h1>
+            <div class="tabs">
+                <ul>
+                    <li routerLinkActive="is-active"><a [routerLink]="['/varstar-overview', id]">Overview</a></li>
+                    <li routerLinkActive="is-active"><a [routerLink]="['/varstar-observations', id]">Observations</a></li>
+                    <li routerLinkActive="is-active"><a [routerLink]="['/varstar-light-curve', id]">Light Curve</a></li>
+                    <li routerLinkActive="is-active"><a [routerLink]="['/varstar-phase-plot', id]">Phase Plot</a></li>
+                </ul>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="observations">
+            <ng-container *ngFor="let session of observations">
+                <div class="columns">
+                    <div class="column">
+                        <div class="label">Session Name</div>
+                        <div>{{ session.session }}</div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="label">Filter</div>
+                        <div>{{ session.filter }}</div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="label">Exposure (sec)</div>
+                        <div>{{ session.exposure }}</div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="label">Comparison Star</div>
+                        <div>{{ session.cstar }}</div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="label">Comment</div>
+                        <div>{{ session.comment }}</div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Julian Date</th>
+                                    <th>Magnitude</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let observation of session.observations">
+                                    <td>{{ observation.jd }}</td>
+                                    <td>{{ observation.mag }}</td>
+                                    <td>{{ observation.err }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+</section>

@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'u235-vstar';
+  title = 'u235-varstar';
   response = null;
 
   constructor(private http: HttpClient) {}

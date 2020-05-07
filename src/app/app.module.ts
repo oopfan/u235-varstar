@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { VstarsModule } from './vstars/vstars.module';
+import { VarStarsModule } from './varstars/varstars.module';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
@@ -19,7 +19,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     BrowserModule,
     HttpClientModule,
     CoreModule,
-    VstarsModule,
+    VarStarsModule,
     AppRoutingModule
   ],
   providers: [Title],

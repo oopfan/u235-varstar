@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "u235-vstar": {
+    "u235-varstar": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/u235-vstar",
+            "outputPath": "dist/u235-varstar",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -62,18 +62,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "u235-vstar:build"
+            "browserTarget": "u235-varstar:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "u235-vstar:build:production"
+              "browserTarget": "u235-varstar:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "u235-vstar:build"
+            "browserTarget": "u235-varstar:build"
           }
         },
         "test": {
@@ -110,15 +110,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "u235-vstar:serve"
+            "devServerTarget": "u235-varstar:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "u235-vstar:serve:production"
+              "devServerTarget": "u235-varstar:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "u235-vstar"
+  "defaultProject": "u235-varstar"
 }

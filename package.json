@@ -1,12 +1,12 @@
 {
-  "name": "u235-vstar",
+  "name": "u235-varstar",
   "version": "0.0.0",
   "description": "Variable Star Phase Plots for Personal Research",
   "author": "Brian Morgan",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oopfan/u235-vstar.git"
+    "url": "git+https://github.com/oopfan/u235-varstar.git"
   },
   "scripts": {
     "ng": "ng",

@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'u235-vstar'`, () => {
+  it(`should have as title 'u235-varstar'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('u235-vstar');
+    expect(app.title).toEqual('u235-varstar');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('u235-vstar app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('u235-varstar app is running!');
   });
 });
