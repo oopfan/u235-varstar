@@ -1,15 +1,11 @@
 <section class="section">
     <div class="container">
-        <ng-container *ngIf="overview">
-            <h1 class="title is-4">{{ overview.varstar }}</h1>
-            <div class="tabs">
-                <ul>
-                    <li routerLinkActive="is-active"><a [routerLink]="['/overview', id]">Overview</a></li>
-                    <li routerLinkActive="is-active"><a [routerLink]="['/observations', id]">Observations</a></li>
-                    <li routerLinkActive="is-active"><a [routerLink]="['/light-curve', id]">Light Curve</a></li>
-                    <li routerLinkActive="is-active"><a [routerLink]="['/phase-plot', id]">Phase Plot</a></li>
-                </ul>
+        <div class="columns">
+            <div class="column">
+                <app-varstar-nav-bar></app-varstar-nav-bar>
             </div>
+        </div>
+        <ng-container *ngIf="overview">
             <div class="columns">
                 <div class="column">
                     <div class="label">Variable Type</div>

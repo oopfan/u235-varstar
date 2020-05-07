@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { VarStarOverviewService, VarStarObservationsService, Overview, Session } from '@core/services';
+import { VarStarObservationsService, Session } from '@core/services';
 
 @Component({
   selector: 'app-varstar-observations',
@@ -8,21 +8,15 @@ import { VarStarOverviewService, VarStarObservationsService, Overview, Session }
   styleUrls: ['./varstar-observations.component.css']
 })
 export class VarStarObservationsComponent implements OnInit {
-  id = null;
-  overview: Overview = null;
-  observations: Session[] = null;
+  observations: Session[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private overviewService: VarStarOverviewService,
     private observationsService: VarStarObservationsService) { }
 
   ngOnInit(): void {
-    this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.overviewService.getById(this.id).subscribe(overview => {
-      this.overview = overview;
-    });
-    this.observationsService.getById(this.id).subscribe(observations => {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.observationsService.getById(id).subscribe(observations => {
       this.observations = observations;
     });
   }

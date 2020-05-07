@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { VarStarOverviewService, VarStarObservationsService } from '@core/services';
+import { VarStarObservationsService, Session } from '@core/services';
 import * as errorBars from 'chartjs-chart-error-bars/build/Chart.ErrorBars.js';
 import { Color } from 'ng2-charts';
 
@@ -10,9 +10,7 @@ import { Color } from 'ng2-charts';
   styleUrls: ['./varstar-light-curve.component.css']
 })
 export class VarStarLightCurveComponent implements OnInit {
-  id = null
-  overview = null;
-  observations = null;
+  observations: Session[] = [];
 
   lineChartData = [];
 
@@ -89,18 +87,13 @@ export class VarStarLightCurveComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private overviewService: VarStarOverviewService,
     private observationsService: VarStarObservationsService) { }
 
   ngOnInit(): void {
     this.calculateChart();
 
-    this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.overviewService.getById(this.id).subscribe(overview => {
-      this.overview = overview;
-    });
-
-    this.observationsService.getById(this.id).subscribe(observations => {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.observationsService.getById(id).subscribe(observations => {
       this.observations = observations;
       this.calculateChart();
     });
