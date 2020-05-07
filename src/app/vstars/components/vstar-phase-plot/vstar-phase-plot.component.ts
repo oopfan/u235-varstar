@@ -120,6 +120,7 @@ export class VstarPhasePlotComponent implements OnInit {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     this.overviewService.getById(this.id).subscribe(overview => {
       this.overview = overview;
+      this.calculateChart();
     });
 
     this.observationsService.getById(this.id).subscribe(observations => {
