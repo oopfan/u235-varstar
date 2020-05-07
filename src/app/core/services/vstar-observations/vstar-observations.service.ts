@@ -1,25 +1,55 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, publishReplay, refCount } from 'rxjs/operators';
+
+export interface Observation {
+  jd: string,
+  mag: string,
+  err: string
+}
+
+export interface ObservationArray {
+  [index: number]: Observation
+}
+
+export interface Session {
+  session: string,
+  filter: string,
+  exposure: string,
+  cstar: string,
+  comment: string,
+  observations: ObservationArray
+}
+
+export interface SessionArray {
+  [index: number]: Session
+}
+
+interface Cache {
+  [id: string]: Observable<SessionArray>
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class VstarObservationsService {
-  cache = {};
+  cache: Cache = {};
 
   constructor(private http: HttpClient) { }
 
-  get(id: string) {
-    if (this.cache[id] !== undefined) {
-      return new Observable(subscriber => {
-        subscriber.next(this.cache[id]);
-      });
+  private getCache(id: string): Observable<SessionArray> {
+    if (this.cache[id] === undefined) {
+      this.cache[id] = this.http.get<SessionArray>('https://oopfan.github.io/u235-vstar/' + id + '.json').pipe(
+        publishReplay(1),
+        refCount()
+      );
     }
-    return this.http.get('https://oopfan.github.io/u235-vstar/' + id + '.json').pipe(map(value => {
-      this.cache[id] = value;
-      return value;
-    }));
+    return this.cache[id];
   }
+
+  getById(id: string): Observable<SessionArray> {
+    return this.getCache(id);
+  }
+
 }

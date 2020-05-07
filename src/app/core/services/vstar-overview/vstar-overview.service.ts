@@ -1,37 +1,46 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, publishReplay, refCount } from 'rxjs/operators';
+
+export interface Overview {
+  vstar: string,
+  vtype: string,
+  constellation: string,
+  ra2000: string,
+  de2000: string,
+  period: string,
+  epoch: string
+}
+
+export interface Overviews {
+  [id: string]: Overview
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class VstarOverviewService {
-  cache = null;
+  cache: Observable<Overviews>;
 
   constructor(private http: HttpClient) { }
 
-  getAll() {
-    if (this.cache) {
-      return new Observable(subscriber => {
-        subscriber.next(this.cache);
-      });
+  private getCache(): Observable<Overviews> {
+    if (!this.cache) {
+      this.cache = this.http.get<Overviews>('https://oopfan.github.io/u235-vstar/dir.json').pipe(
+        publishReplay(1),
+        refCount()
+      );
     }
-    return this.http.get('https://oopfan.github.io/u235-vstar/dir.json').pipe(map(value => {
-      this.cache = value;
-      return value;
-    }));
+    return this.cache;
   }
 
-  getById(id: string) {
-    if (this.cache) {
-      return new Observable(subscriber => {
-        subscriber.next(this.cache[id]);
-      });
-    }
-    return this.http.get('https://oopfan.github.io/u235-vstar/dir.json').pipe(map(value => {
-      this.cache = value;
-      return value[id];
-    }));
+  getAll(): Observable<Overviews> {
+    return this.getCache();
   }
+
+  getById(id: string): Observable<Overview> {
+    return this.getCache().pipe(map(overviews => overviews[id]));
+  }
+
 }

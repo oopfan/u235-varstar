@@ -22,7 +22,7 @@ export class VstarObservationsComponent implements OnInit {
     this.overviewService.getById(this.id).subscribe(overview => {
       this.overview = overview;
     });
-    this.observationsService.get(this.id).subscribe(observations => {
+    this.observationsService.getById(this.id).subscribe(observations => {
       this.observations = observations;
     });
   }
