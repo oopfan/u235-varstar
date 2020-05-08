@@ -11,6 +11,7 @@ export class VarStarsHomeComponent implements OnInit {
   browserTitle = 'Variable Stars | U235-VarStar';
   overviews: Overviews = null;
   overviewIds = [];
+  overviewHttpError: string;
 
   constructor(
     private titleService: Title,
@@ -21,6 +22,8 @@ export class VarStarsHomeComponent implements OnInit {
     this.overviewService.getAll().subscribe(overviews => {
       this.overviews = overviews;
       this.overviewIds = Object.keys(overviews);
+    }, err => {
+      this.overviewHttpError = err.message;
     });
   }
 

@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { VarStarOverviewService, Overview } from '@core/services';
+import { Component, OnInit, Input } from '@angular/core';
+import { Overview } from '@core/services';
 
 @Component({
   selector: 'app-varstar-nav-bar',
@@ -8,18 +7,12 @@ import { VarStarOverviewService, Overview } from '@core/services';
   styleUrls: ['./varstar-nav-bar.component.css']
 })
 export class VarStarNavBarComponent implements OnInit {
-  id = null;
-  overview: Overview = null;
+  @Input() overview: Overview;
+  @Input() id: string;
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private overviewService: VarStarOverviewService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.overviewService.getById(this.id).subscribe(overview => {
-      this.overview = overview;
-    });
   }
 
 }

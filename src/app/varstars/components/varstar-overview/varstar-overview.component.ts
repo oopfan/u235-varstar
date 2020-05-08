@@ -10,7 +10,9 @@ import { VarStarOverviewService, Overview} from '@core/services';
 })
 export class VarStarOverviewComponent implements OnInit {
   browserTitle = 'Overview | U235-VarStar';
+  id: string;
   overview: Overview = null;
+  overviewHttpError: string = null;
 
   constructor(
     private titleService: Title,
@@ -19,9 +21,11 @@ export class VarStarOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.service.getById(id).subscribe(overview => {
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.service.getById(this.id).subscribe(overview => {
       this.overview = overview;
+    }, err => {
+      this.overviewHttpError = err.message;
     });
   }
 

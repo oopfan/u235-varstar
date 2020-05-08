@@ -1,6 +1,14 @@
 <section class="section">
     <div class="container">
-        <ng-container *ngIf="overviews">
+        <div *ngIf="!overviewHttpError && !overviews">
+            Loading...
+            <progress class="progress is-small is-primary" max="100">15%</progress>
+        </div>
+        <div *ngIf="overviewHttpError">
+            <app-http-error [errorMessage]="overviewHttpError"></app-http-error>
+            <app-http-error-suggestion></app-http-error-suggestion>
+        </div>
+        <div *ngIf="overviews">
             <h1 class="title is-4">Variable Stars</h1>
             <div class="columns">
                 <div class="column">
@@ -20,6 +28,6 @@
                     </table>
                 </div>
             </div>
-        </ng-container>
+        </div>
     </div>
 </section>

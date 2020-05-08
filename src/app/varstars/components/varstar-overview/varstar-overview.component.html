@@ -1,11 +1,19 @@
 <section class="section">
     <div class="container">
-        <div class="columns">
-            <div class="column">
-                <app-varstar-nav-bar></app-varstar-nav-bar>
-            </div>
+        <div *ngIf="!overviewHttpError && !overview">
+            Loading...
+            <progress class="progress is-small is-primary" max="100">15%</progress>
         </div>
-        <ng-container *ngIf="overview">
+        <div *ngIf="overviewHttpError">
+            <app-http-error [errorMessage]="overviewHttpError"></app-http-error>
+            <app-http-error-suggestion></app-http-error-suggestion>
+        </div>
+        <div *ngIf="overview">
+            <div class="columns">
+                <div class="column">
+                    <app-varstar-nav-bar [overview]="overview" [id]="id"></app-varstar-nav-bar>
+                </div>
+            </div>
             <div class="columns">
                 <div class="column">
                     <div class="label">Variable Type</div>
@@ -42,6 +50,6 @@
                     <div>{{ overview.epoch }}</div>
                 </div>
             </div>
-        </ng-container>
+        </div>
     </div>
 </section>

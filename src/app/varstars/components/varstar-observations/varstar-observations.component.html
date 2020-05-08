@@ -1,61 +1,76 @@
 <section class="section">
     <div class="container">
-        <div class="columns">
-            <div class="column">
-                <app-varstar-nav-bar></app-varstar-nav-bar>
-            </div>
+        <div *ngIf="!overviewHttpError && !observationsHttpError && !(overview && observations)">
+            Loading...
+            <progress class="progress is-small is-primary" max="100">15%</progress>
         </div>
-        <ng-container *ngFor="let session of observations">
+        <div *ngIf="overviewHttpError">
+            <app-http-error [errorMessage]="overviewHttpError"></app-http-error>
+        </div>
+        <div *ngIf="observationsHttpError">
+            <app-http-error [errorMessage]="observationsHttpError"></app-http-error>
+        </div>
+        <div *ngIf="overviewHttpError || observationsHttpError">
+            <app-http-error-suggestion></app-http-error-suggestion>
+        </div>
+        <ng-container *ngIf="overview && observations">
             <div class="columns">
                 <div class="column">
-                    <div class="label">Session Name</div>
-                    <div>{{ session.session }}</div>
+                    <app-varstar-nav-bar [overview]="overview" [id]="id"></app-varstar-nav-bar>
                 </div>
             </div>
-            <div class="columns">
-                <div class="column">
-                    <div class="label">Filter</div>
-                    <div>{{ session.filter }}</div>
+            <ng-container *ngFor="let session of observations">
+                <div class="columns">
+                    <div class="column">
+                        <div class="label">Session Name</div>
+                        <div>{{ session.session }}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="columns">
-                <div class="column">
-                    <div class="label">Exposure (sec)</div>
-                    <div>{{ session.exposure }}</div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="label">Filter</div>
+                        <div>{{ session.filter }}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="columns">
-                <div class="column">
-                    <div class="label">Comparison Star</div>
-                    <div>{{ session.cstar }}</div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="label">Exposure (sec)</div>
+                        <div>{{ session.exposure }}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="columns">
-                <div class="column">
-                    <div class="label">Comment</div>
-                    <div>{{ session.comment }}</div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="label">Comparison Star</div>
+                        <div>{{ session.cstar }}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="columns">
-                <div class="column">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Julian Date</th>
-                                <th>Magnitude</th>
-                                <th>Error</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let observation of session.observations">
-                                <td>{{ observation.jd }}</td>
-                                <td>{{ observation.mag }}</td>
-                                <td>{{ observation.err }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="columns">
+                    <div class="column">
+                        <div class="label">Comment</div>
+                        <div>{{ session.comment }}</div>
+                    </div>
                 </div>
-            </div>
+                <div class="columns">
+                    <div class="column">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Julian Date</th>
+                                    <th>Magnitude</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let observation of session.observations">
+                                    <td>{{ observation.jd }}</td>
+                                    <td>{{ observation.mag }}</td>
+                                    <td>{{ observation.err }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </ng-container>
         </ng-container>
     </div>
 </section>

@@ -20,8 +20,11 @@ function Phase2(phase1: number): number {
 })
 export class VarStarPhasePlotComponent implements OnInit {
   browserTitle = 'Phase Plot | U235-VarStar';
+  id: string;
   overview: Overview = null;
-  observations: Session[] = [];
+  overviewHttpError: string;
+  observations: Session[] = null;
+  observationsHttpError: string;
 
   lineChartData = [];
 
@@ -57,7 +60,7 @@ export class VarStarPhasePlotComponent implements OnInit {
   calculateChart() {
     this.lineChartData = [];
     this.lineChartColors = [];
-    if (this.overview !== null) {
+    if (this.overview !== null && this.observations !== null) {
       const period = parseFloat(this.overview.period);
       const epoch = parseFloat(this.overview.epoch);
       for (let session of this.observations) {
@@ -118,17 +121,18 @@ export class VarStarPhasePlotComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
-    this.calculateChart();
-
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.overviewService.getById(id).subscribe(overview => {
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.overviewService.getById(this.id).subscribe(overview => {
       this.overview = overview;
       this.calculateChart();
+    }, err => {
+      this.overviewHttpError = err.message;
     });
-
-    this.observationsService.getById(id).subscribe(observations => {
+    this.observationsService.getById(this.id).subscribe(observations => {
       this.observations = observations;
       this.calculateChart();
+    }, err => {
+      this.observationsHttpError = err.message;
     });
   }
 

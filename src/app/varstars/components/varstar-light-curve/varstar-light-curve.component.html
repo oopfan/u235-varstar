@@ -1,19 +1,34 @@
 <section class="section">
     <div class="container">
-        <div class="columns">
-            <div class="column">
-                <app-varstar-nav-bar></app-varstar-nav-bar>
+        <div *ngIf="!overviewHttpError && !observationsHttpError && !(overview && observations)">
+            Loading...
+            <progress class="progress is-small is-primary" max="100">15%</progress>
+        </div>
+        <div *ngIf="overviewHttpError">
+            <app-http-error [errorMessage]="overviewHttpError"></app-http-error>
+        </div>
+        <div *ngIf="observationsHttpError">
+            <app-http-error [errorMessage]="observationsHttpError"></app-http-error>
+        </div>
+        <div *ngIf="overviewHttpError || observationsHttpError">
+            <app-http-error-suggestion></app-http-error-suggestion>
+        </div>
+        <ng-container *ngIf="overview && observations">
+            <div class="columns">
+                <div class="column">
+                    <app-varstar-nav-bar [overview]="overview" [id]="id"></app-varstar-nav-bar>
+                </div>
             </div>
-        </div>
-        <div class="chart-wrapper" *ngIf="lineChartData.length > 0">
-            <canvas baseChart 
-                [datasets]="lineChartData" 
-                [options]="lineChartOptions"
-                [colors]="lineChartColors" 
-                [legend]="lineChartLegend" 
-                [chartType]="lineChartType" 
-                [plugins]="lineChartPlugins">
-            </canvas>
-        </div>
+            <div class="chart-wrapper" *ngIf="lineChartData.length > 0">
+                <canvas baseChart 
+                    [datasets]="lineChartData" 
+                    [options]="lineChartOptions"
+                    [colors]="lineChartColors" 
+                    [legend]="lineChartLegend" 
+                    [chartType]="lineChartType" 
+                    [plugins]="lineChartPlugins">
+                </canvas>
+            </div>
+        </ng-container>
     </div>
 </section>

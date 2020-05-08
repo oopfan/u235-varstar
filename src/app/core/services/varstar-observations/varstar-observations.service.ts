@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, publishReplay, refCount } from 'rxjs/operators';
+import { publishReplay, refCount } from 'rxjs/operators';
 
 export interface Observation {
   jd: string,
   mag: string,
   err: string
-}
-
-export interface ObservationArray {
-  [index: number]: Observation
 }
 
 export interface Session {
@@ -20,10 +16,6 @@ export interface Session {
   cstar: string,
   comment: string,
   observations: Observation[]
-}
-
-export interface SessionArray {
-  [index: number]: Session
 }
 
 interface Cache {

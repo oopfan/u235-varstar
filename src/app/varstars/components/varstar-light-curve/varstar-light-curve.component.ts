@@ -1,7 +1,7 @@
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { VarStarObservationsService, Session } from '@core/services';
+import { VarStarOverviewService, Overview, VarStarObservationsService, Session } from '@core/services';
 import * as errorBars from 'chartjs-chart-error-bars/build/Chart.ErrorBars.js';
 import { Color } from 'ng2-charts';
 
@@ -12,7 +12,11 @@ import { Color } from 'ng2-charts';
 })
 export class VarStarLightCurveComponent implements OnInit {
   browserTitle = 'Light Curve | U235-VarStar';
-  observations: Session[] = [];
+  id: string;
+  overview: Overview = null;
+  overviewHttpError: string;
+  observations: Session[] = null;
+  observationsHttpError: string;
 
   lineChartData = [];
 
@@ -90,16 +94,22 @@ export class VarStarLightCurveComponent implements OnInit {
   constructor(
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
+    private overviewService: VarStarOverviewService,
     private observationsService: VarStarObservationsService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
-    this.calculateChart();
-
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.observationsService.getById(id).subscribe(observations => {
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.overviewService.getById(this.id).subscribe(overview => {
+      this.overview = overview;
+    }, err => {
+      this.overviewHttpError = err.message;
+    });
+    this.observationsService.getById(this.id).subscribe(observations => {
       this.observations = observations;
       this.calculateChart();
+    }, err => {
+      this.observationsHttpError = err.message;
     });
   }
 
