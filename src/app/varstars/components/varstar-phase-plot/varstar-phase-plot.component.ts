@@ -212,6 +212,12 @@ export class VarStarPhasePlotComponent implements OnInit {
     }
   }
 
+  updateTime() {
+    if (this.overview && this.observations) {
+      this.calculateChart();
+    }
+  }
+
   constructor(
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
