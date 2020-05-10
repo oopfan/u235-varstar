@@ -1,10 +1,10 @@
 import { Title } from '@angular/platform-browser';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin, Subscription } from 'rxjs';
 import { VarStarOverviewService, VarStarObservationsService, Overview, Session, Observation } from '@core/services';
 import * as errorBars from 'chartjs-chart-error-bars/build/Chart.ErrorBars.js';
 import { Color } from 'ng2-charts';
-import { interval } from 'rxjs';
 
 function Phase1(jd: number, epoch: number, period: number): number {
   return ((jd - epoch) % period) / period;
@@ -107,13 +107,13 @@ function calculateDate(jd: number): Date {
   templateUrl: './varstar-phase-plot.component.html',
   styleUrls: ['./varstar-phase-plot.component.css']
 })
-export class VarStarPhasePlotComponent implements OnInit {
+export class VarStarPhasePlotComponent implements OnInit, OnDestroy {
   browserTitle = 'Phase Plot | U235-VarStar';
   id: string;
   overview: Overview = null;
-  overviewHttpError: string;
   observations: Session[] = null;
-  observationsHttpError: string;
+  httpError: string;
+  subscription: Subscription;
 
   lineChartData = [];
 
@@ -213,9 +213,7 @@ export class VarStarPhasePlotComponent implements OnInit {
   }
 
   updateTime() {
-    if (this.overview && this.observations) {
-      this.calculateChart();
-    }
+    this.calculateChart();
   }
 
   constructor(
@@ -227,22 +225,26 @@ export class VarStarPhasePlotComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.overviewService.getById(this.id).subscribe(overview => {
-      this.overview = overview;
-      if (this.observations) {
-        this.calculateChart();
-      }
-    }, err => {
-      this.overviewHttpError = err.message;
+    const observable = forkJoin({
+      overview: this.overviewService.getById(this.id),
+      observations: this.observationsService.getById(this.id)
     });
-    this.observationsService.getById(this.id).subscribe(observations => {
-      this.observations = observations;
-      if (this.overview) {
+    this.subscription = observable.subscribe({
+      next: value => {
+        this.overview = value.overview;
+        this.observations = value.observations;
         this.calculateChart();
+      },
+      error: err => {
+        this.httpError = err.message;
       }
-    }, err => {
-      this.observationsHttpError = err.message;
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

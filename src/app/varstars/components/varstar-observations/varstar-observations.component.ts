@@ -1,6 +1,7 @@
 import { Title } from '@angular/platform-browser';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin, Subscription } from 'rxjs';
 import { VarStarOverviewService, Overview, VarStarObservationsService, Session } from '@core/services';
 
 @Component({
@@ -8,13 +9,13 @@ import { VarStarOverviewService, Overview, VarStarObservationsService, Session }
   templateUrl: './varstar-observations.component.html',
   styleUrls: ['./varstar-observations.component.css']
 })
-export class VarStarObservationsComponent implements OnInit {
+export class VarStarObservationsComponent implements OnInit, OnDestroy {
   browserTitle = 'Observations | U235-VarStar';
   id: string;
   overview: Overview = null;
-  overviewHttpError: string;
   observations: Session[] = null;
-  observationsHttpError: string;
+  httpError: string;
+  subscription: Subscription;
 
   constructor(
     private titleService: Title,
@@ -25,16 +26,25 @@ export class VarStarObservationsComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.overviewService.getById(this.id).subscribe(overview => {
-      this.overview = overview;
-    }, err => {
-      this.overviewHttpError = err.message;
+    const observable = forkJoin({
+      overview: this.overviewService.getById(this.id),
+      observations: this.observationsService.getById(this.id)
     });
-    this.observationsService.getById(this.id).subscribe(observations => {
-      this.observations = observations;
-    }, err => {
-      this.observationsHttpError = err.message;
+    this.subscription = observable.subscribe({
+      next: value => {
+        this.overview = value.overview;
+        this.observations = value.observations;
+      },
+      error: err => {
+        this.httpError = err.message;
+      }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

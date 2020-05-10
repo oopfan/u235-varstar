@@ -1,17 +1,11 @@
 <section class="section">
     <div class="container">
-        <div *ngIf="!overviewHttpError && !observationsHttpError && !(overview && observations)">
+        <div *ngIf="!httpError && !(overview && observations)">
             Loading...
             <progress class="progress is-small is-primary" max="100">15%</progress>
         </div>
-        <div *ngIf="overviewHttpError">
-            <app-http-error [errorMessage]="overviewHttpError"></app-http-error>
-        </div>
-        <div *ngIf="observationsHttpError">
-            <app-http-error [errorMessage]="observationsHttpError"></app-http-error>
-        </div>
-        <div *ngIf="overviewHttpError || observationsHttpError">
-            <app-http-error-suggestion></app-http-error-suggestion>
+        <div *ngIf="httpError">
+            <app-http-error [errorMessage]="httpError"></app-http-error>
         </div>
         <ng-container *ngIf="overview && observations">
             <div class="columns">

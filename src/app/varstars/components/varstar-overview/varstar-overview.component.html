@@ -1,12 +1,11 @@
 <section class="section">
     <div class="container">
-        <div *ngIf="!overviewHttpError && !overview">
+        <div *ngIf="!httpError && !overview">
             Loading...
             <progress class="progress is-small is-primary" max="100">15%</progress>
         </div>
-        <div *ngIf="overviewHttpError">
-            <app-http-error [errorMessage]="overviewHttpError"></app-http-error>
-            <app-http-error-suggestion></app-http-error-suggestion>
+        <div *ngIf="httpError">
+            <app-http-error [errorMessage]="httpError"></app-http-error>
         </div>
         <div *ngIf="overview">
             <div class="columns">

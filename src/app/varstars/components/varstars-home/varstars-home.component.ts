@@ -1,5 +1,6 @@
 import { Title } from '@angular/platform-browser';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { VarStarOverviewService, Overviews } from '@core/services';
 
 @Component({
@@ -7,11 +8,12 @@ import { VarStarOverviewService, Overviews } from '@core/services';
   templateUrl: './varstars-home.component.html',
   styleUrls: ['./varstars-home.component.css']
 })
-export class VarStarsHomeComponent implements OnInit {
+export class VarStarsHomeComponent implements OnInit, OnDestroy {
   browserTitle = 'Variable Stars | U235-VarStar';
   overviews: Overviews = null;
   overviewIds = [];
-  overviewHttpError: string;
+  httpError: string;
+  subscription: Subscription;
 
   constructor(
     private titleService: Title,
@@ -19,12 +21,22 @@ export class VarStarsHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
-    this.overviewService.getAll().subscribe(overviews => {
-      this.overviews = overviews;
-      this.overviewIds = Object.keys(overviews);
-    }, err => {
-      this.overviewHttpError = err.message;
+    const observable = this.overviewService.getAll();
+    this.subscription = observable.subscribe({
+      next: value => {
+        this.overviews = value;
+        this.overviewIds = Object.keys(value);
+      },
+      error: err => {
+        this.httpError = err.message;
+      }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }
