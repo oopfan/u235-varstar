@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Overview } from '@core/services';
 
 @Component({
   selector: 'app-varstar-nav-bar',
@@ -7,7 +6,7 @@ import { Overview } from '@core/services';
   styleUrls: ['./varstar-nav-bar.component.css']
 })
 export class VarStarNavBarComponent implements OnInit {
-  @Input() overview: Overview;
+  @Input() starname: string;
   @Input() id: string;
 
   constructor() { }
