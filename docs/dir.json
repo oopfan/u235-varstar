@@ -8,6 +8,15 @@
         "period": "0.47777174",
         "epoch": "2454305.457"
     },
+    "v1053-her": {
+        "varstar": "V1053 Her",
+        "vartype": "EW",
+        "constellation": "Hercules",
+        "ra2000": "17 18 39.92",
+        "de2000": "+35 54 26.0",
+        "period": "0.28779613",
+        "epoch": "2452500.185"
+    },
     "yz-boo": {
         "varstar": "YZ Boo",
         "vartype": "DSCT",
