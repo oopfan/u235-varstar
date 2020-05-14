@@ -104,15 +104,5 @@
             {"jd":"2458983.73995","mag":"12.981","err":"0.041"},
             {"jd":"2458983.74126","mag":"13.018","err":"0.040"}
         ]
-    },
-    {
-        "session": "2020-05-14 60s",
-        "filter": "L",
-        "exposure": "60",
-        "cstar": "UCAC4 629-052907",
-        "comment": "ok tracking, large declination drift",
-        "observations": [
-            {"jd":"2458958.57998","mag":"10.747","err":"0.007"}
-        ]
     }
 ]
