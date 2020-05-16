@@ -8,6 +8,7 @@ export const routes: Routes = [
   { path: 'observations/:id', component: fromComponents.VarStarObservationsComponent },
   { path: 'light-curve/:id', component: fromComponents.VarStarLightCurveComponent },
   { path: 'phase-plot/:id', component: fromComponents.VarStarPhasePlotComponent },
+  { path: 'gallery/:id', component: fromComponents.VarStarGalleryComponent }
 ];
 
 @NgModule({

@@ -36,7 +36,7 @@ interface Cache {
 @Injectable({
   providedIn: 'root'
 })
-export class VarStarObservationsService {
+export class VarStarDetailsService {
   cache: Cache = {};
 
   constructor(private http: HttpClient) { }

@@ -2,7 +2,7 @@ import { Title } from '@angular/platform-browser';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, Subscription } from 'rxjs';
-import { VarStarOverviewService, Overview, VarStarObservationsService, Session } from '@core/services';
+import { VarStarOverviewService, Overview, VarStarDetailsService, Session } from '@core/services';
 import * as errorBars from 'chartjs-chart-error-bars/build/Chart.ErrorBars.js';
 import { Color } from 'ng2-charts';
 
@@ -94,7 +94,7 @@ export class VarStarLightCurveComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private overviewService: VarStarOverviewService,
-    private observationsService: VarStarObservationsService) { }
+    private observationsService: VarStarDetailsService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);

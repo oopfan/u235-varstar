@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, Subscription, Observable } from 'rxjs';
 import { map, publishReplay, refCount } from 'rxjs/operators';
-import { VarStarOverviewService, VarStarObservationsService, Overview, Session, Observation } from '@core/services';
+import { VarStarOverviewService, VarStarDetailsService, Overview, Session, Observation } from '@core/services';
 import * as errorBars from 'chartjs-chart-error-bars/build/Chart.ErrorBars.js';
 import { Color } from 'ng2-charts';
 
@@ -194,7 +194,7 @@ export class VarStarPhasePlotComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private overviewService: VarStarOverviewService,
-    private observationsService: VarStarObservationsService) { }
+    private observationsService: VarStarDetailsService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);

@@ -1,10 +1,10 @@
 import { VarStarOverviewService } from './varstar-overview/varstar-overview.service';
-import { VarStarObservationsService } from './varstar-observations/varstar-observations.service';
+import { VarStarDetailsService } from './varstar-details/varstar-details.service';
 
 export const services: any[] = [
     VarStarOverviewService,
-    VarStarObservationsService
+    VarStarDetailsService
 ];
 
 export * from './varstar-overview/varstar-overview.service';
-export * from './varstar-observations/varstar-observations.service';
+export * from './varstar-details/varstar-details.service';
