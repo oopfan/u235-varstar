@@ -10,7 +10,7 @@ import { VarStarOverviewService, Overview, VarStarDetailsService, Gallery } from
   styleUrls: ['./varstar-gallery.component.css']
 })
 export class VarStarGalleryComponent implements OnInit, OnDestroy {
-  browserTitle = 'Light Curve | U235-VarStar';
+  browserTitle = 'Gallery | U235-VarStar';
   id: string;
   overview: Overview = null;
   gallery: Gallery[] = null;

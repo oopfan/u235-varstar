@@ -4,7 +4,7 @@
             "image": "V1053-Her_Light_opL_60_secs_2020-05-14_calibrated_aligned_stretched_cropped_aij_startools_pipp_minmaxlight_animated.gif",
             "pull": "left",
             "content": [
-                "<h3>Animation of Min/Max Light<\/h3>",
+                "<h3>Animation Of Min/Max Light<\/h3>",
                 "<p>",
                     "The star at the center of the frame is the eclipsing star system: V1053 Her. ",
                     "All of the other stars are constant brightness. The first frame was captured ",
@@ -23,6 +23,31 @@
                     "regularly eclipse one another. The stars are too far away for us to resolve them as ",
                     "individual stars so they appear as a single star. Maximum light is when the stars are ",
                     "apart. The light from both stars add together to make it appear brighter.",
+                "<\/p>"
+            ]
+        },
+        {
+            "image": "V1053-Her_Light_opL_60_secs_2020-05-14_calibrated_aligned_stretched_negative_annotated_aij_siril_limiting-magnitude.png",
+            "pull": "right",
+            "content": [
+                "<h3>Limiting Magnitude Of A 60-Second Exposure<\/h3>",
+                "<p>",
+                    "This project has a dual purpose: first to measure the light of this eclipsing binary ",
+                    "star system, and second to attempt to find the minimum exposure to capture a 20th ",
+                    "magnitude star. The purpose of that second effort is to prepare for measuring Edwin ",
+                    "Hubble's famous Cepheid variable star in the Andromeda Galaxy. I already know where ",
+                    "the star is located in one of galaxy's arms. I captured it in an astrophotograph last ",
+                    "year. I also know that its brightness oscillates between 18th and 20th magnitude. In ",
+                    "order to prepare for the galaxy's return this Fall I am doing the work upfront to ",
+                    "to determine the required exposure.",
+                "<\/p>",
+                "<p>",
+                    "In the attached image I have identified and annotated several faint stars with their ",
+                    "corresponding magnitude. The faintest is magnitude 17.201. I must increase the exposure ",
+                    "until I can clearly see stars of 20th magnitude or fainter. At this point I don't know ",
+                    "if my skies are dark enough. I may have to find a remote site with Bortle 4 skies or better. ",
+                    "My special thanks to the curators of the GAIA DR2 star catalog and to Cartes du Ciel, ",
+                    "aka SkyChart.",
                 "<\/p>"
             ]
         }
