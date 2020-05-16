@@ -18,8 +18,19 @@ export interface Session {
   observations: Observation[]
 }
 
+export interface Gallery {
+  image: string,
+  pull: string,
+  content: string[]
+}
+
+export interface Details {
+  gallery: Gallery[],
+  sessions: Session[]
+}
+
 interface Cache {
-  [id: string]: Observable<Session[]>
+  [id: string]: Observable<Details>
 }
 
 @Injectable({
@@ -30,9 +41,9 @@ export class VarStarObservationsService {
 
   constructor(private http: HttpClient) { }
 
-  private getCache(id: string): Observable<Session[]> {
+  private getCache(id: string): Observable<Details> {
     if (this.cache[id] === undefined) {
-      this.cache[id] = this.http.get<Session[]>('https://oopfan.github.io/u235-varstar/' + id + '.json').pipe(
+      this.cache[id] = this.http.get<Details>('https://oopfan.github.io/u235-varstar/' + id + '.json').pipe(
         publishReplay(1),
         refCount()
       );
@@ -40,7 +51,7 @@ export class VarStarObservationsService {
     return this.cache[id];
   }
 
-  getById(id: string): Observable<Session[]> {
+  getById(id: string): Observable<Details> {
     return this.getCache(id);
   }
 

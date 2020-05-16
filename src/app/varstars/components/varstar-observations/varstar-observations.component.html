@@ -1,19 +1,19 @@
 <section class="section">
     <div class="container">
-        <div *ngIf="!httpError && !(overview && observations)">
+        <div *ngIf="!httpError && !(overview && sessions)">
             Loading...
             <progress class="progress is-small is-primary" max="100">15%</progress>
         </div>
         <div *ngIf="httpError">
             <app-http-error [errorMessage]="httpError"></app-http-error>
         </div>
-        <ng-container *ngIf="overview && observations">
+        <ng-container *ngIf="overview && sessions">
             <div class="columns">
                 <div class="column">
                     <app-varstar-nav-bar [starname]="overview.varstar" [id]="id"></app-varstar-nav-bar>
                 </div>
             </div>
-            <ng-container *ngFor="let session of observations">
+            <ng-container *ngFor="let session of sessions">
                 <div class="columns">
                     <div class="column">
                         <div class="label">Session Name</div>

@@ -13,7 +13,7 @@ export class VarStarObservationsComponent implements OnInit, OnDestroy {
   browserTitle = 'Observations | U235-VarStar';
   id: string;
   overview: Overview = null;
-  observations: Session[] = null;
+  sessions: Session[] = null;
   httpError: string;
   subscription: Subscription;
 
@@ -28,12 +28,12 @@ export class VarStarObservationsComponent implements OnInit, OnDestroy {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     const observable = forkJoin({
       overview: this.overviewService.getById(this.id),
-      observations: this.observationsService.getById(this.id)
+      details: this.observationsService.getById(this.id)
     });
     this.subscription = observable.subscribe({
       next: value => {
         this.overview = value.overview;
-        this.observations = value.observations;
+        this.sessions = value.details.sessions;
       },
       error: err => {
         this.httpError = err.message;

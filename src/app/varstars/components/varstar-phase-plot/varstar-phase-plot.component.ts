@@ -74,7 +74,7 @@ export class VarStarPhasePlotComponent implements OnInit, OnDestroy {
   captureChart(): Observable<ChartData> {
     return forkJoin({
       overview: this.overviewService.getById(this.id),
-      observations: this.observationsService.getById(this.id)
+      details: this.observationsService.getById(this.id)
     }).pipe(
       map(value => {
         const result = {} as ChartData;
@@ -94,7 +94,7 @@ export class VarStarPhasePlotComponent implements OnInit, OnDestroy {
         result.minMag = Infinity;
         result.maxMag = -Infinity;
 
-        for (let session of value.observations) {
+        for (let session of value.details.sessions) {
           const dataset = createPlotPointsForSession(session, result.epoch, result.period);
           result.minMag = dataset.map(p => p.yMin).reduce((min, cur) => Math.min(min, cur), result.minMag);
           result.maxMag = dataset.map(p => p.yMax).reduce((max, cur) => Math.max(max, cur), result.maxMag);

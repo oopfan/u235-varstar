@@ -15,7 +15,7 @@ export class VarStarLightCurveComponent implements OnInit, OnDestroy {
   browserTitle = 'Light Curve | U235-VarStar';
   id: string;
   overview: Overview = null;
-  observations: Session[] = null;
+  sessions: Session[] = null;
   httpError: string;
   subscription: Subscription;
 
@@ -53,7 +53,7 @@ export class VarStarLightCurveComponent implements OnInit, OnDestroy {
   calculateChart() {
     this.lineChartData = [];
     this.lineChartColors = [];
-    for (let session of this.observations) {
+    for (let session of this.sessions) {
       let dataset = [];
       for (let observation of session.observations) {
         const jd = parseFloat(observation.jd);
@@ -101,12 +101,12 @@ export class VarStarLightCurveComponent implements OnInit, OnDestroy {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     const observable = forkJoin({
       overview: this.overviewService.getById(this.id),
-      observations: this.observationsService.getById(this.id)
+      details: this.observationsService.getById(this.id)
     });
     this.subscription = observable.subscribe({
       next: value => {
         this.overview = value.overview;
-        this.observations = value.observations;
+        this.sessions = value.details.sessions;
         this.calculateChart();
       },
       error: err => {
