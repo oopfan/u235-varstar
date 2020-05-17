@@ -30,7 +30,7 @@
             "image": "V1053-Her_Light_opL_60_secs_2020-05-14_calibrated_aligned_stretched_negative_annotated_aij_siril_limiting-magnitude.png",
             "pull": "right",
             "content": [
-                "<h3>Limiting Magnitude Of A 60-Second Exposure<\/h3>",
+                "<h3>Limiting Magnitude Of A 60-Second Exposure: 17.201G<\/h3>",
                 "<p>",
                     "This project has a dual purpose: first to measure the light of this eclipsing binary ",
                     "star system, and second to attempt to find the minimum exposure to capture a 20th ",
@@ -43,11 +43,11 @@
                 "<\/p>",
                 "<p>",
                     "In the attached image I identified and annotated several of the faintest stars and their ",
-                    "corresponding magnitude. The faintest is magnitude 17.201. Clearly a 60-second exposure ",
-                    "is not long enough to see stars of 20th magnitude. More troubling is that I do not know ",
-                    "if my skies are dark enough. I may have to find a remote site with Bortle 4 skies or better. ",
-                    "My special thanks to the curators of the GAIA DR2 star catalog and to Cartes du Ciel, ",
-                    "aka SkyChart.",
+                    "corresponding magnitudes. The faintest is magnitude 17.201 at 73 degrees above my horizon. ",
+                    "Clearly a 60-second exposure is not long enough to see stars of 20th magnitude. More troubling ",
+                    "is that I do not know if my skies are dark enough. I may have to find a remote site with Bortle 4 ",
+                    "skies or better. My special thanks to the curators of the GAIA DR2 star catalog and to Cartes ",
+                    "du Ciel, aka SkyChart.",
                 "<\/p>"
             ]
         }
