@@ -1,22 +1,24 @@
 import { Title } from '@angular/platform-browser';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin, Subscription } from 'rxjs';
-import { VarStarOverviewService, Overview, VarStarDetailsService, Gallery } from '@core/services';
+import { VarStarOverviewService, VarStarDetailsService, Gallery } from '@core/services';
+import { forkJoin, of, Observable } from 'rxjs';
+import { catchError, pluck, concatAll, mapTo } from 'rxjs/operators';
 
 @Component({
   selector: 'app-varstar-gallery',
   templateUrl: './varstar-gallery.component.html',
   styleUrls: ['./varstar-gallery.component.css']
 })
-export class VarStarGalleryComponent implements OnInit, OnDestroy {
+export class VarStarGalleryComponent implements OnInit {
   browserTitle = 'Gallery | U235-VarStar';
   id: string;
-  overview: Overview = null;
-  gallery: Gallery[] = null;
   galleryUrl = "https://oopfan.github.io/u235-varstar/";
-  httpError: string;
-  subscription: Subscription;
+
+  error: string;
+  loading$: Observable<boolean>;
+  varstar$: Observable<string>;
+  gallery$: Observable<Gallery[]>;
 
   constructor(
     private titleService: Title,
@@ -27,25 +29,23 @@ export class VarStarGalleryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    const observable = forkJoin({
+
+    const data$ = forkJoin({
       overview: this.overviewService.getById(this.id),
       details: this.detailsService.getById(this.id)
-    });
-    this.subscription = observable.subscribe({
-      next: value => {
-        this.overview = value.overview;
-        this.gallery = value.details.gallery;
-      },
-      error: err => {
-        this.httpError = err.message;
-      }
-    });
-  }
+    }).pipe(
+      catchError(err => {
+        this.error = err.message;
+        return of({});
+      })
+    );
 
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    const loadingOne$ = of(true);
+    const loadingTwo$ = data$.pipe(mapTo(false));
+    this.loading$ = of(loadingOne$, loadingTwo$).pipe(concatAll());
+
+    this.varstar$ = data$.pipe(pluck("overview"), pluck("varstar"));
+    this.gallery$ = data$.pipe(pluck("details"), pluck("gallery"));
   }
 
 }

@@ -1,19 +1,19 @@
 <section class="section">
     <div class="container">
-        <div *ngIf="!httpError && !(overview && gallery)">
+        <div *ngIf="loading$ | async">
             Loading...
             <progress class="progress is-small is-primary" max="100">15%</progress>
         </div>
-        <div *ngIf="httpError">
-            <app-http-error [errorMessage]="httpError"></app-http-error>
+        <div *ngIf="error">
+            <app-http-error [errorMessage]="error"></app-http-error>
         </div>
-        <ng-container *ngIf="overview && gallery">
+        <ng-container *ngIf="!(loading$ | async) && !error">
             <div class="columns">
                 <div class="column">
-                    <app-varstar-nav-bar [starname]="overview.varstar" [id]="id"></app-varstar-nav-bar>
+                    <app-varstar-nav-bar [starname]="varstar$ | async" [id]="id"></app-varstar-nav-bar>
                 </div>
             </div>
-            <div *ngFor="let item of gallery">
+            <div *ngFor="let item of gallery$ | async">
                 <img style="padding-right: 10px;" class="is-pulled-left" [src]="galleryUrl+item.image" alt="Image goes here" />
                 <div class="content" [innerHTML]="item.content.join('')"></div>
                 <br />
