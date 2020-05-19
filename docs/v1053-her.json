@@ -50,6 +50,28 @@
                     "du Ciel, aka SkyChart.",
                 "<\/p>"
             ]
+        },
+        {
+            "image": "V1053-Her_2020-05-14_good_vs_poor_tracking.png",
+            "pull": "left",
+            "content": [
+                "<h3>Good vs Poor Tracking And Its Effects On Photometry<\/h3>",
+                "<p>",
+                    "In conventional astrophotography the best astrophotographs demand the highest quality frames ",
+                    "such as the one in the left panel which contains perfectly round stars. But what do we do with ",
+                    "low quality frames such as the one on the right? In astrophotography we would reject the right-most ",
+                    "frame, however in photometry both are equally valuable since the light is integrated over the area ",
+                    "of the aperture (i.e. the bulls-eye).",
+                "<\/p>",
+                "<p>",
+                    "Aperture selection is important. One must be careful to make it large enough to accommodate the worst ",
+                    "frame but there are disadvantages: poor tracking spreads the light over a greater number of pixels ",
+                    "which leads to lower signal-to-noise and greater error in the magnitude estimate. Also, some targets ",
+                    "such as GK Boo, are in a crowded neighborhood of stars where poor tracking can smear one star's light ",
+                    "into another. Decisions must be made on a case by case basis but generally speaking photometry is more ",
+                    "tolerant of tracking and guiding errors.",
+                "<\/p>"
+            ]
         }
     ],
     "sessions": [
