@@ -2,8 +2,8 @@ import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VarStarOverviewService, VarStarDetailsService, Gallery } from '@core/services';
-import { forkJoin, of, Observable } from 'rxjs';
-import { catchError, pluck, concatAll, mapTo } from 'rxjs/operators';
+import { forkJoin, of, concat, Observable } from 'rxjs';
+import { catchError, pluck, mapTo } from 'rxjs/operators';
 
 @Component({
   selector: 'app-varstar-gallery',
@@ -42,7 +42,7 @@ export class VarStarGalleryComponent implements OnInit {
 
     const loadingOne$ = of(true);
     const loadingTwo$ = data$.pipe(mapTo(false));
-    this.loading$ = of(loadingOne$, loadingTwo$).pipe(concatAll());
+    this.loading$ = concat(loadingOne$, loadingTwo$);
 
     this.varstar$ = data$.pipe(pluck("overview"), pluck("varstar"));
     this.gallery$ = data$.pipe(pluck("details"), pluck("gallery"));
