@@ -1,4 +1,13 @@
 {
+    "hat-p-5-b": {
+        "varstar": "Exoplanet HAT-P-5 b",
+        "vartype": "X",
+        "constellation": "Lyra",
+        "ra2000": "18 17 37.3",
+        "de2000": "+36 37 16.6",
+        "period": "2.788474",
+        "epoch": "2454241.77663"
+    },
     "gk-boo": {
         "varstar": "GK Boo",
         "vartype": "EA",
