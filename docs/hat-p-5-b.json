@@ -63,7 +63,7 @@
                     "are there alternatives? Sure I can buy a new camera with a greater Full Well Depth or I can ",
                     "try <i>de-focusing</i> with my existing camera. Remember that the greatest source of noise in a single frame ",
                     "is shot noise. Shot Noise is the square root of the star's pixel level. It seems counterintuitive ",
-                    "but Shot Noise as a percentage of the star's signal decreases the more photons you capture but there is a ",
+                    "but Shot Noise, as a percentage of the star's signal, decreases the more photons you capture but there is a ",
                     "limit to how long you can expose before saturation causes the loss of information.",
                 "<\/p>",
                 "<p>",
@@ -71,7 +71,7 @@
                     "of saturation. But how do we convert all of those pixel values into a single measurement of ",
                     "star magnitude? That is achieved by widening AstroImageJ's aperture. The aperture defines the circular area ",
                     "over which pixels are integrated. Integration simply means a summation of dozens of indivdual ",
-                    "numbers into one number. Each individual pixel still has the limit of holding only a finite amount of signal",
+                    "numbers into one number. Each individual pixel still has the limit of holding only a finite amount of signal ",
                     "but through de-focusing we are spreading the signal over many more pixels. Doubling the radius of the star ",
                     "quadruples the number of pixels. If you then increase exposure to the point just below saturation for any given ",
                     "pixel then you have effectively purchased a much more expensive camera for use in Photometry. Or so the theory goes.",
@@ -89,7 +89,10 @@
                     "the star radius. I captured 4 frames that required a 180-second exposure. Afterwards I calibrated and aligned the ",
                     "frames in AstroImageJ and performed differential photometry on the indicated target star and comparison star. Next ",
                     "I exported AstroImageJ's magnitude and error measurements into Excel in order to generate the plots. ",
-                    "The screenshot tells the full story!",
+                    "The screenshot tells the full story.",
+                "<\/p>",
+                "<p>",
+                    "Special thanks to Dr. Robin Glover at <a href=\"https://www.sharpcap.co.uk/\" target=\"_blank\">SharpCap</a> for expert advice.",
                 "<\/p>"
             ]
         }
