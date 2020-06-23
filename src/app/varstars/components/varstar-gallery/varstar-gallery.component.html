@@ -1,13 +1,10 @@
 <section class="section">
     <div class="container">
-        <div *ngIf="loading$ | async">
-            Loading...
-            <progress class="progress is-small is-primary" max="100">15%</progress>
-        </div>
+        <app-loading></app-loading>
         <div *ngIf="error">
             <app-http-error [errorMessage]="error"></app-http-error>
         </div>
-        <ng-container *ngIf="!(loading$ | async) && !error">
+        <ng-container *ngIf="!error">
             <div class="columns">
                 <div class="column">
                     <app-varstar-nav-bar [starname]="varstar$ | async" [id]="id"></app-varstar-nav-bar>

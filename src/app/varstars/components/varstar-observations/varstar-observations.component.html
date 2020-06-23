@@ -1,9 +1,6 @@
 <section class="section">
     <div class="container">
-        <div *ngIf="!httpError && !(overview && sessions)">
-            Loading...
-            <progress class="progress is-small is-primary" max="100">15%</progress>
-        </div>
+        <app-loading></app-loading>
         <div *ngIf="httpError">
             <app-http-error [errorMessage]="httpError"></app-http-error>
         </div>

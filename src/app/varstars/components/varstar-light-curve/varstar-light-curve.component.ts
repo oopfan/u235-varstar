@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, Subscription } from 'rxjs';
 import { VarStarOverviewService, Overview, VarStarDetailsService, Session } from '@core/services';
+import { LoadingService } from '../../../loading';
 import * as errorBars from 'chartjs-chart-error-bars/build/Chart.ErrorBars.js';
 import { Color } from 'ng2-charts';
 
@@ -94,7 +95,8 @@ export class VarStarLightCurveComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private overviewService: VarStarOverviewService,
-    private observationsService: VarStarDetailsService) { }
+    private observationsService: VarStarDetailsService,
+    private loadingService: LoadingService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
@@ -103,7 +105,7 @@ export class VarStarLightCurveComponent implements OnInit, OnDestroy {
       overview: this.overviewService.getById(this.id),
       details: this.observationsService.getById(this.id)
     });
-    this.subscription = observable.subscribe({
+    this.subscription = this.loadingService.showLoadingUntilCompleted(observable).subscribe({
       next: value => {
         this.overview = value.overview;
         this.sessions = value.details.sessions;

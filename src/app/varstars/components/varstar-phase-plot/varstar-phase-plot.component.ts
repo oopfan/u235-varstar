@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { forkJoin, Subscription, Observable } from 'rxjs';
 import { map, publishReplay, refCount } from 'rxjs/operators';
 import { VarStarOverviewService, VarStarDetailsService, Overview, Session, Observation } from '@core/services';
+import { LoadingService } from '../../../loading';
 import * as errorBars from 'chartjs-chart-error-bars/build/Chart.ErrorBars.js';
 import { Color } from 'ng2-charts';
 
@@ -194,12 +195,13 @@ export class VarStarPhasePlotComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private overviewService: VarStarOverviewService,
-    private observationsService: VarStarDetailsService) { }
+    private observationsService: VarStarDetailsService,
+    private loadingService: LoadingService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.chart = this.captureChart();
+    this.chart = this.loadingService.showLoadingUntilCompleted(this.captureChart());
 
     this.subscription = this.chart.subscribe(
       value => this.renderChart(value),

@@ -2,6 +2,7 @@ import { Title } from '@angular/platform-browser';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { VarStarOverviewService, Overviews } from '@core/services';
+import { LoadingService } from '../../../loading';
 
 @Component({
   selector: 'app-varstars-home',
@@ -17,12 +18,12 @@ export class VarStarsHomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private titleService: Title,
-    private overviewService: VarStarOverviewService) { }
+    private overviewService: VarStarOverviewService,
+    private loadingService: LoadingService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
-    const observable = this.overviewService.getAll();
-    this.subscription = observable.subscribe({
+    this.subscription = this.loadingService.showLoadingUntilCompleted(this.overviewService.getAll()).subscribe({
       next: value => {
         this.overviews = value;
         this.overviewIds = Object.keys(value);

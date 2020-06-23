@@ -2,6 +2,7 @@ import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VarStarOverviewService, VarStarDetailsService, Gallery } from '@core/services';
+import { LoadingService } from '../../../loading';
 import { forkJoin, of, concat, Observable } from 'rxjs';
 import { catchError, pluck, mapTo } from 'rxjs/operators';
 
@@ -16,7 +17,6 @@ export class VarStarGalleryComponent implements OnInit {
   galleryUrl = "https://oopfan.github.io/u235-varstar/";
 
   error: string;
-  loading$: Observable<boolean>;
   varstar$: Observable<string>;
   gallery$: Observable<Gallery[]>;
 
@@ -24,13 +24,14 @@ export class VarStarGalleryComponent implements OnInit {
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private overviewService: VarStarOverviewService,
-    private detailsService: VarStarDetailsService) { }
+    private detailsService: VarStarDetailsService,
+    private loadingService: LoadingService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
 
-    const data$ = forkJoin({
+    const data$ = this.loadingService.showLoadingUntilCompleted(forkJoin({
       overview: this.overviewService.getById(this.id),
       details: this.detailsService.getById(this.id)
     }).pipe(
@@ -38,11 +39,7 @@ export class VarStarGalleryComponent implements OnInit {
         this.error = err.message;
         return of({});
       })
-    );
-
-    const loadingOne$ = of(true);
-    const loadingTwo$ = data$.pipe(mapTo(false));
-    this.loading$ = concat(loadingOne$, loadingTwo$);
+    ));
 
     this.varstar$ = data$.pipe(pluck("overview"), pluck("varstar"));
     this.gallery$ = data$.pipe(pluck("details"), pluck("gallery"));

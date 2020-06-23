@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
 
 import * as fromComponents from './components';
+import { LoadingModule } from '../loading/loading.module';
 import { VarStarsRoutingModule } from './varstars-routing.module';
 
 @NgModule({
@@ -10,6 +11,7 @@ import { VarStarsRoutingModule } from './varstars-routing.module';
   imports: [
     CommonModule,
     ChartsModule,
+    LoadingModule,
     VarStarsRoutingModule
   ]
 })
