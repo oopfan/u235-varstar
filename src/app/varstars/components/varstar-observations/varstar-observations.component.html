@@ -1,9 +1,5 @@
 <section class="section">
     <div class="container">
-        <app-loading></app-loading>
-        <div *ngIf="httpError">
-            <app-http-error [errorMessage]="httpError"></app-http-error>
-        </div>
         <ng-container *ngIf="(overview$ | async) as overview">
             <div class="columns">
                 <div class="column">

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { VarStarOverviewService, Overview} from '@core/services';
 import { LoadingService } from '../../../loading';
+import { MessagesService } from '../../../messages';
 import { catchError } from 'rxjs/operators';
 
 @Component({
@@ -15,19 +16,19 @@ export class VarStarOverviewComponent implements OnInit {
   browserTitle = 'Overview | U235-VarStar';
   id: string;
   overview$: Observable<Overview>;
-  httpError: string;
 
   constructor(
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private overviewService: VarStarOverviewService,
-    private loadingService: LoadingService) { }
+    private loadingService: LoadingService,
+    private messagesService: MessagesService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     this.overview$ = this.loadingService.showLoadingUntilCompleted(this.overviewService.getById(this.id)).pipe(
-      catchError(err => {this.httpError = err.message; return throwError(err); })
+      catchError(err => {this.messagesService.showErrors(err.message); return throwError(err); })
     );
   }
 

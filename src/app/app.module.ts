@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { LandingModule } from './landing/landing.module';
 import { VarStarsModule } from './varstars/varstars.module';
+import { LoadingModule } from './loading/loading.module';
+import { MessagesModule } from './messages/messages.module';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
@@ -22,6 +24,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     CoreModule,
     LandingModule,
     VarStarsModule,
+    LoadingModule,
+    MessagesModule,
     AppRoutingModule
   ],
   providers: [Title],

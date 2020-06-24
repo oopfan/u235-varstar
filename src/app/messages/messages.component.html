@@ -1,0 +1,13 @@
+<ng-container *ngIf="(errors$ | async) as errors">
+    <article class="message is-danger" *ngIf="showMessages">
+        <div class="message-header">
+            <p>Oops...Unexpected Error!</p>
+            <button class="delete" aria-label="delete" (click)="onClose()"></button>
+        </div>
+        <div class="message-body">
+            <div *ngFor="let error of errors">
+                {{ error }}
+            </div>
+        </div>
+    </article>
+</ng-container>

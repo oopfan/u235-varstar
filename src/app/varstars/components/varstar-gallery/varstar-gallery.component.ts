@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VarStarOverviewService, VarStarDetailsService, Overview, Gallery } from '@core/services';
 import { LoadingService } from '../../../loading';
+import { MessagesService } from '../../../messages';
 import { forkJoin, Observable, throwError } from 'rxjs';
 import { catchError, pluck } from 'rxjs/operators';
 
@@ -16,7 +17,6 @@ export class VarStarGalleryComponent implements OnInit {
   id: string;
   galleryUrl = "https://oopfan.github.io/u235-varstar/";
 
-  httpError: string;
   overview$: Observable<Overview>;
   gallery$: Observable<Gallery[]>;
 
@@ -25,7 +25,8 @@ export class VarStarGalleryComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private overviewService: VarStarOverviewService,
     private detailsService: VarStarDetailsService,
-    private loadingService: LoadingService) { }
+    private loadingService: LoadingService,
+    private messagesService: MessagesService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
@@ -35,7 +36,7 @@ export class VarStarGalleryComponent implements OnInit {
       overview: this.overviewService.getById(this.id),
       details: this.detailsService.getById(this.id)
     }).pipe(
-      catchError(err => {this.httpError = err.message; return throwError(err); })
+      catchError(err => {this.messagesService.showErrors(err.message); return throwError(err); })
     );
 
     const loading$ = this.loadingService.showLoadingUntilCompleted(data$);

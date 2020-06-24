@@ -5,6 +5,7 @@ import { forkJoin, Observable, throwError, BehaviorSubject, combineLatest } from
 import { map, publishReplay, refCount, catchError } from 'rxjs/operators';
 import { VarStarOverviewService, VarStarDetailsService, Session, Observation } from '@core/services';
 import { LoadingService } from '../../../loading';
+import { MessagesService } from '../../../messages';
 import * as errorBars from 'chartjs-chart-error-bars/build/Chart.ErrorBars.js';
 import { Color } from 'ng2-charts';
 
@@ -35,7 +36,6 @@ type ChartData = {
 export class VarStarPhasePlotComponent implements OnInit {
   browserTitle = 'Phase Plot | U235-VarStar';
   id: string;
-  httpError: string;
   chart$: Observable<ChartData>;
   starname: string;
   date$ = new BehaviorSubject(new Date());
@@ -103,7 +103,7 @@ export class VarStarPhasePlotComponent implements OnInit {
 
         return result;
       }),
-      catchError(err => {this.httpError = err.message; return throwError(err); }),
+      catchError(err => {this.messagesService.showErrors(err.message); return throwError(err); }),
       publishReplay(1),
       refCount()
     );
@@ -183,7 +183,8 @@ export class VarStarPhasePlotComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private overviewService: VarStarOverviewService,
     private observationsService: VarStarDetailsService,
-    private loadingService: LoadingService) { }
+    private loadingService: LoadingService,
+    private messagesService: MessagesService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
