@@ -4,7 +4,7 @@
         <div *ngIf="httpError">
             <app-http-error [errorMessage]="httpError"></app-http-error>
         </div>
-        <div *ngIf="overview">
+        <div *ngIf="(overview$ | async) as overview">
             <div class="columns">
                 <div class="column">
                     <app-varstar-nav-bar [starname]="overview.varstar" [id]="id"></app-varstar-nav-bar>

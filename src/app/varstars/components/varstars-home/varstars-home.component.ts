@@ -1,20 +1,20 @@
 import { Title } from '@angular/platform-browser';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
 import { VarStarOverviewService, Overviews } from '@core/services';
 import { LoadingService } from '../../../loading';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-varstars-home',
   templateUrl: './varstars-home.component.html',
   styleUrls: ['./varstars-home.component.css']
 })
-export class VarStarsHomeComponent implements OnInit, OnDestroy {
+export class VarStarsHomeComponent implements OnInit {
   browserTitle = 'Variable Stars | U235-VarStar';
-  overviews: Overviews = null;
-  overviewIds = [];
+  overviews$: Observable<Overviews>;
   httpError: string;
-  subscription: Subscription;
+  objectKeys = Object.keys;
 
   constructor(
     private titleService: Title,
@@ -23,21 +23,9 @@ export class VarStarsHomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
-    this.subscription = this.loadingService.showLoadingUntilCompleted(this.overviewService.getAll()).subscribe({
-      next: value => {
-        this.overviews = value;
-        this.overviewIds = Object.keys(value);
-      },
-      error: err => {
-        this.httpError = err.message;
-      }
-    });
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.overviews$ = this.loadingService.showLoadingUntilCompleted(this.overviewService.getAll()).pipe(
+      catchError(err => {this.httpError = err.message; return throwError(err); })
+    );
   }
 
 }

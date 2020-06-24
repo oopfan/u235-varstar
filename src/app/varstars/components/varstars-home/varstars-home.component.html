@@ -4,7 +4,7 @@
         <div *ngIf="httpError">
             <app-http-error [errorMessage]="httpError"></app-http-error>
         </div>
-        <div *ngIf="overviews">
+        <div *ngIf="(overviews$ | async) as overviews">
             <h1 class="title is-4">Variable Stars</h1>
             <div class="columns">
                 <div class="column">
@@ -16,9 +16,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let id of overviewIds">
-                                <td>{{ overviews[id].varstar }}</td>
-                                <td><a [routerLink]="['/overview', id]">View</a></td>
+                            <tr *ngFor="let key of objectKeys(overviews)">
+                                <td>{{ overviews[key].varstar }}</td>
+                                <td><a [routerLink]="['/overview', key]">View</a></td>
                             </tr>
                         </tbody>
                     </table>

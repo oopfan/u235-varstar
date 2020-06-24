@@ -28,7 +28,7 @@ export class VarStarOverviewService {
   private getCache(): Observable<Overviews> {
     if (!this.cache) {
       this.cache = this.http.get<Overviews>('https://oopfan.github.io/u235-varstar/dir.json').pipe(
-        delay(5000),
+        delay(2000),
         publishReplay(1),
         refCount()
       );

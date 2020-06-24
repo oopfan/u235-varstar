@@ -4,13 +4,13 @@
         <div *ngIf="httpError">
             <app-http-error [errorMessage]="httpError"></app-http-error>
         </div>
-        <ng-container *ngIf="lineChartData">
+        <ng-container *ngIf="chart$ | async">
             <div class="columns">
                 <div class="column">
                     <app-varstar-nav-bar [starname]="starname" [id]="id"></app-varstar-nav-bar>
                 </div>
             </div>
-            <div class="chart-wrapper" *ngIf="lineChartData.length > 0">
+            <div class="chart-wrapper">
                 <canvas baseChart 
                     [datasets]="lineChartData" 
                     [options]="lineChartOptions"

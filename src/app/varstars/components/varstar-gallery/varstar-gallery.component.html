@@ -1,20 +1,22 @@
 <section class="section">
     <div class="container">
         <app-loading></app-loading>
-        <div *ngIf="error">
-            <app-http-error [errorMessage]="error"></app-http-error>
+        <div *ngIf="httpError">
+            <app-http-error [errorMessage]="httpError"></app-http-error>
         </div>
-        <ng-container *ngIf="!error">
+        <ng-container *ngIf="(overview$ | async) as overview">
             <div class="columns">
                 <div class="column">
-                    <app-varstar-nav-bar [starname]="varstar$ | async" [id]="id"></app-varstar-nav-bar>
+                    <app-varstar-nav-bar [starname]="overview.varstar" [id]="id"></app-varstar-nav-bar>
                 </div>
             </div>
-            <div *ngFor="let item of gallery$ | async">
-                <img style="padding-right: 10px;" class="is-pulled-left" [src]="galleryUrl+item.image" alt="Image goes here" />
-                <div class="content" [innerHTML]="item.content.join('')"></div>
-                <br />
-            </div>
+            <ng-container *ngIf="(gallery$ | async) as gallery">
+                <div *ngFor="let item of gallery">
+                    <img style="padding-right: 10px;" class="is-pulled-left" [src]="galleryUrl+item.image" alt="Image goes here" />
+                    <div class="content" [innerHTML]="item.content.join('')"></div>
+                    <br />
+                </div>
+            </ng-container>
         </ng-container>
     </div>
 </section>

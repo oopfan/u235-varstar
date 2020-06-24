@@ -1,21 +1,21 @@
 import { Title } from '@angular/platform-browser';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { VarStarOverviewService, Overview} from '@core/services';
 import { LoadingService } from '../../../loading';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-varstar-overview',
   templateUrl: './varstar-overview.component.html',
   styleUrls: ['./varstar-overview.component.css']
 })
-export class VarStarOverviewComponent implements OnInit, OnDestroy {
+export class VarStarOverviewComponent implements OnInit {
   browserTitle = 'Overview | U235-VarStar';
   id: string;
-  overview: Overview = null;
+  overview$: Observable<Overview>;
   httpError: string;
-  subscription: Subscription;
 
   constructor(
     private titleService: Title,
@@ -26,20 +26,9 @@ export class VarStarOverviewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.subscription = this.loadingService.showLoadingUntilCompleted(this.overviewService.getById(this.id)).subscribe({
-      next: value => {
-        this.overview = value;
-      },
-      error: err => {
-        this.httpError = err.message;
-      }
-    });
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.overview$ = this.loadingService.showLoadingUntilCompleted(this.overviewService.getById(this.id)).pipe(
+      catchError(err => {this.httpError = err.message; return throwError(err); })
+    );
   }
 
 }

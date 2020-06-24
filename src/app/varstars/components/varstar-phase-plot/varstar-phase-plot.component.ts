@@ -1,9 +1,9 @@
 import { Title } from '@angular/platform-browser';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin, Subscription, Observable } from 'rxjs';
-import { map, publishReplay, refCount } from 'rxjs/operators';
-import { VarStarOverviewService, VarStarDetailsService, Overview, Session, Observation } from '@core/services';
+import { forkJoin, Observable, throwError, BehaviorSubject, combineLatest } from 'rxjs';
+import { map, publishReplay, refCount, catchError } from 'rxjs/operators';
+import { VarStarOverviewService, VarStarDetailsService, Session, Observation } from '@core/services';
 import { LoadingService } from '../../../loading';
 import * as errorBars from 'chartjs-chart-error-bars/build/Chart.ErrorBars.js';
 import { Color } from 'ng2-charts';
@@ -23,8 +23,6 @@ type ChartData = {
   epoch: number,
   sessionNames: string[],
   sessionPlotPoints: PlotPoint[][],
-  cursorNames: string[],
-  cursorPlotPoints: PlotPoint[][],
   minMag: number,
   maxMag: number
 }
@@ -34,13 +32,13 @@ type ChartData = {
   templateUrl: './varstar-phase-plot.component.html',
   styleUrls: ['./varstar-phase-plot.component.css']
 })
-export class VarStarPhasePlotComponent implements OnInit, OnDestroy {
+export class VarStarPhasePlotComponent implements OnInit {
   browserTitle = 'Phase Plot | U235-VarStar';
   id: string;
   httpError: string;
-  subscription: Subscription;
-  chart: Observable<ChartData>;
+  chart$: Observable<ChartData>;
   starname: string;
+  date$ = new BehaviorSubject(new Date());
 
   lineChartData: any;
   lineChartColors: Color[] = [];
@@ -105,36 +103,31 @@ export class VarStarPhasePlotComponent implements OnInit, OnDestroy {
 
         return result;
       }),
+      catchError(err => {this.httpError = err.message; return throwError(err); }),
       publishReplay(1),
-      refCount(),
-      map(value => {
-        const result = value;
-
-        result.cursorPlotPoints = [];
-        result.cursorNames = [];
-
-        const avgMag = isFinite(result.minMag) ? (result.minMag + result.maxMag) / 2 : 0;
-        const errMag = isFinite(result.minMag) ? (result.maxMag - result.minMag) / 2 : 1;
-
-        let date = new Date();
-        let jd = calculateJD(date, calculateJD0FromDate(date));
-
-        result.cursorPlotPoints.push(createPlotPoints(jd, result.epoch, result.period, avgMag, errMag));
-        result.cursorNames.push(`Now: ${date.toLocaleTimeString()}`);
-
-        jd += 2 / 24;
-        date = calculateDate(jd);
-        result.cursorPlotPoints.push(createPlotPoints(jd, result.epoch, result.period, avgMag, errMag));
-        result.cursorNames.push(`Now+2h: ${date.toLocaleTimeString()}`);
-
-        return result;
-      })
+      refCount()
     );
   }
 
-  renderChart(value: ChartData): void {
+  renderChart(value: ChartData, date: Date): void {
     this.starname = value.starname;
     this.lineChartData = [];
+
+    const cursorPlotPoints = [];
+    const cursorNames = [];
+
+    const avgMag = isFinite(value.minMag) ? (value.minMag + value.maxMag) / 2 : 0;
+    const errMag = isFinite(value.minMag) ? (value.maxMag - value.minMag) / 2 : 1;
+
+    let jd = calculateJD(date, calculateJD0FromDate(date));
+
+    cursorPlotPoints.push(createPlotPoints(jd, value.epoch, value.period, avgMag, errMag));
+    cursorNames.push(`Now: ${date.toLocaleTimeString()}`);
+
+    jd += 2 / 24;
+    date = calculateDate(jd);
+    cursorPlotPoints.push(createPlotPoints(jd, value.epoch, value.period, avgMag, errMag));
+    cursorNames.push(`Now+2h: ${date.toLocaleTimeString()}`);
 
     for (let i = 0; i < value.sessionNames.length; i++) {
       this.lineChartData.push({
@@ -153,8 +146,8 @@ export class VarStarPhasePlotComponent implements OnInit, OnDestroy {
     }
 
     this.lineChartData.push({
-      data: value.cursorPlotPoints[0],
-      label: value.cursorNames[0],
+      data: cursorPlotPoints[0],
+      label: cursorNames[0],
       showLine: false,
       fill: false,
       errorBarColor: 'red',
@@ -167,8 +160,8 @@ export class VarStarPhasePlotComponent implements OnInit, OnDestroy {
     });
 
     this.lineChartData.push({
-      data: value.cursorPlotPoints[1],
-      label: value.cursorNames[1],
+      data: cursorPlotPoints[1],
+      label: cursorNames[1],
       showLine: false,
       fill: false,
       errorBarColor: 'blue',
@@ -182,13 +175,7 @@ export class VarStarPhasePlotComponent implements OnInit, OnDestroy {
   }
 
   updateTime() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-    this.subscription = this.chart.subscribe(
-      value => this.renderChart(value),
-      err => this.httpError = err.message
-    );
+    this.date$.next(new Date());
   }
 
   constructor(
@@ -201,18 +188,8 @@ export class VarStarPhasePlotComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.chart = this.loadingService.showLoadingUntilCompleted(this.captureChart());
-
-    this.subscription = this.chart.subscribe(
-      value => this.renderChart(value),
-      err => this.httpError = err.message
-    );
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    const data$ = this.loadingService.showLoadingUntilCompleted(this.captureChart());
+    this.chart$ = combineLatest(data$, this.date$).pipe(map(([data, date]) => { this.renderChart(data, date); return data; }));
   }
 
 }

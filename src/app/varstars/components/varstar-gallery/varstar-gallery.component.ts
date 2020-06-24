@@ -1,10 +1,10 @@
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { VarStarOverviewService, VarStarDetailsService, Gallery } from '@core/services';
+import { VarStarOverviewService, VarStarDetailsService, Overview, Gallery } from '@core/services';
 import { LoadingService } from '../../../loading';
-import { forkJoin, of, concat, Observable } from 'rxjs';
-import { catchError, pluck, mapTo } from 'rxjs/operators';
+import { forkJoin, Observable, throwError } from 'rxjs';
+import { catchError, pluck } from 'rxjs/operators';
 
 @Component({
   selector: 'app-varstar-gallery',
@@ -16,8 +16,8 @@ export class VarStarGalleryComponent implements OnInit {
   id: string;
   galleryUrl = "https://oopfan.github.io/u235-varstar/";
 
-  error: string;
-  varstar$: Observable<string>;
+  httpError: string;
+  overview$: Observable<Overview>;
   gallery$: Observable<Gallery[]>;
 
   constructor(
@@ -31,18 +31,16 @@ export class VarStarGalleryComponent implements OnInit {
     this.titleService.setTitle(this.browserTitle);
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
 
-    const data$ = this.loadingService.showLoadingUntilCompleted(forkJoin({
+    const data$ = forkJoin({
       overview: this.overviewService.getById(this.id),
       details: this.detailsService.getById(this.id)
     }).pipe(
-      catchError(err => {
-        this.error = err.message;
-        return of({});
-      })
-    ));
+      catchError(err => {this.httpError = err.message; return throwError(err); })
+    );
 
-    this.varstar$ = data$.pipe(pluck("overview"), pluck("varstar"));
-    this.gallery$ = data$.pipe(pluck("details"), pluck("gallery"));
+    const loading$ = this.loadingService.showLoadingUntilCompleted(data$);
+    this.overview$ = loading$.pipe(pluck("overview"));
+    this.gallery$ = loading$.pipe(pluck("details"), pluck("gallery"));
   }
 
 }
