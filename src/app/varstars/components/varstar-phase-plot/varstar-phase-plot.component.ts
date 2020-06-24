@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, Observable, throwError, BehaviorSubject, combineLatest } from 'rxjs';
 import { map, publishReplay, refCount, catchError } from 'rxjs/operators';
+import { U235AstroClock } from 'u235-astro';
 import { VarStarOverviewService, VarStarDetailsService, Session, Observation } from '@core/services';
 import { LoadingService } from '../../../loading';
 import { MessagesService } from '../../../messages';
@@ -119,13 +120,13 @@ export class VarStarPhasePlotComponent implements OnInit {
     const avgMag = isFinite(value.minMag) ? (value.minMag + value.maxMag) / 2 : 0;
     const errMag = isFinite(value.minMag) ? (value.maxMag - value.minMag) / 2 : 1;
 
-    let jd = calculateJD(date, calculateJD0FromDate(date));
+    let jd = U235AstroClock.calculateJD(U235AstroClock.calculateDayFraction(date), U235AstroClock.calculateJD0FromDate(date));
 
     cursorPlotPoints.push(createPlotPoints(jd, value.epoch, value.period, avgMag, errMag));
     cursorNames.push(`Now: ${date.toLocaleTimeString()}`);
 
     jd += 2 / 24;
-    date = calculateDate(jd);
+    date = U235AstroClock.calculateDate(jd);
     cursorPlotPoints.push(createPlotPoints(jd, value.epoch, value.period, avgMag, errMag));
     cursorNames.push(`Now+2h: ${date.toLocaleTimeString()}`);
 
@@ -246,56 +247,4 @@ function createPlotPointsForSession(session: Session, epoch: number, period: num
     dataset.push(...plotPoints);
   }
   return dataset;
-}
-
-function calculateJD0FromDate(date: Date): number {
-  let yp = date.getUTCFullYear();
-  let mp = date.getUTCMonth() + 1;
-  if (mp <= 2) {
-    mp += 12;
-    yp -= 1;
-  }
-  let jd0 = Math.trunc(36525 * yp / 100);
-  jd0 += Math.trunc((306001 * (1 + mp)) / 10000);
-  jd0 += date.getUTCDate() + 2 + Math.trunc(yp / 400);
-  jd0 -= Math.trunc(yp / 100);
-  return jd0 + 1720994.5;
-}
-
-function calculateJD(date: Date, jd0: number): number {
-  return jd0 +
-    ((date.getUTCHours() + (date.getUTCMinutes() +
-    (date.getUTCSeconds() + date.getUTCMilliseconds() /
-    1000.0) / 60.0) / 60.0) / 24.0);
-}
-
-function calculateDate(jd: number): Date {
-  const JGREG = 15 + 31 * (10 + 12 * 1582);
-  const julian = jd;
-  const p = julian - Math.floor(julian);
-  let ja = Math.trunc(Math.floor(julian));
-  if (ja >= JGREG) {
-    const jalpha = Math.trunc(((ja - 1867216) - 0.25) / 36524.25);
-    ja += 1 + jalpha - Math.trunc(jalpha / 4);
-  }
-  const jb = ja + 1524;
-  const jc = Math.trunc(6680.0 + ((jb - 2439870) - 122.1) / 365.25);
-  const jdd = 365 * jc + Math.trunc(jc / 4);
-  const je = Math.trunc((jb - jdd) / 30.6001);
-  const day = jb - jdd - Math.trunc(30.6001 * je);
-  let month = je - 1;
-  if (month > 12) {
-    month -= 12;
-  }
-  let year = jc - 4715;
-  if (month > 2) {
-    year -= 1;
-  }
-  if (year <= 0) {
-    year -= 1;
-  }
-  return new Date(
-    Date.UTC(year, month - 1, day) +
-    Math.trunc((p + 0.5) * 24 * 60 * 60 * 1000 + 0.5)
-  );
 }

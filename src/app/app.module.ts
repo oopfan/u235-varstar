@@ -11,6 +11,7 @@ import { LoadingModule } from './loading/loading.module';
 import { MessagesModule } from './messages/messages.module';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { U235AstroModule } from 'u235-astro';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     VarStarsModule,
     LoadingModule,
     MessagesModule,
+    U235AstroModule,
     AppRoutingModule
   ],
   providers: [Title],

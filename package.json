@@ -1,6 +1,6 @@
 {
   "name": "u235-varstar",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Variable Star Phase Plots for Personal Research",
   "author": "Brian Morgan",
   "license": "MIT",
@@ -33,6 +33,7 @@
     "ng2-charts": "^2.3.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
+    "u235-astro": "0.0.5",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
