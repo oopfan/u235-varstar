@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, publishReplay, refCount, delay } from 'rxjs/operators';
+import { map, publishReplay, refCount } from 'rxjs/operators';
 
 export interface Overview {
   varstar: string,
@@ -28,7 +28,6 @@ export class VarStarOverviewService {
   private getCache(): Observable<Overviews> {
     if (!this.cache) {
       this.cache = this.http.get<Overviews>('https://oopfan.github.io/u235-varstar/dir.json').pipe(
-        delay(2000),
         publishReplay(1),
         refCount()
       );
