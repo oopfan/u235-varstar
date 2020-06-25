@@ -19,14 +19,25 @@ type PlotPoint = {
   yMax: number
 }
 
-type ChartData = {
+type SessionData = {
   starname: string,
   period: number,
   epoch: number,
-  sessionNames: string[],
-  sessionPlotPoints: PlotPoint[][],
   minMag: number,
-  maxMag: number
+  maxMag: number,
+  names: string[],
+  plotPoints: PlotPoint[][]
+}
+
+type CursorData = {
+  names: string[],
+  plotPoints: PlotPoint[][]
+}
+
+type ChartData = {
+  starname: string,
+  lineChartData: any[],
+  lineChartColors: Color[]
 }
 
 @Component({
@@ -38,11 +49,11 @@ export class VarStarPhasePlotComponent implements OnInit {
   browserTitle = 'Phase Plot | U235-VarStar';
   id: string;
   chart$: Observable<ChartData>;
-  starname: string;
   date$ = new BehaviorSubject(new Date());
 
-  lineChartData: any;
-  lineChartColors: Color[] = [];
+  lineChartType = 'scatterWithErrorBars';
+  lineChartLegend = true;
+  lineChartPlugins = [ errorBars ];
 
   lineChartOptions = {
     responsive: true,
@@ -67,112 +78,115 @@ export class VarStarPhasePlotComponent implements OnInit {
     }
   };
 
-  lineChartLegend = true;
-  lineChartPlugins = [ errorBars ];
-  lineChartType = 'scatterWithErrorBars';
-
-  captureChart(): Observable<ChartData> {
+  captureSession(): Observable<SessionData> {
     return forkJoin({
       overview: this.overviewService.getById(this.id),
       details: this.observationsService.getById(this.id)
     }).pipe(
       map(value => {
-        const result = {} as ChartData;
+        const result = {} as SessionData;
+        result.plotPoints = [];
+        result.names = [];
+        result.minMag = Infinity;
+        result.maxMag = -Infinity;
 
         result.starname = value.overview.varstar;
         result.period = parseFloat(value.overview.period);
         if (isNaN(result.period)) {
-          throw new Error('Period is not a number');
+          throw new Error('Phase Plot captureSession(): Period is not a number');
         }
         result.epoch = parseFloat(value.overview.epoch);
         if (isNaN(result.epoch)) {
-          throw new Error('Epoch is not a number');
+          throw new Error('Phase Plot captureSession(): Epoch is not a number');
         }
-
-        result.sessionPlotPoints = [];
-        result.sessionNames = [];
-        result.minMag = Infinity;
-        result.maxMag = -Infinity;
 
         for (let session of value.details.sessions) {
           const dataset = createPlotPointsForSession(session, result.epoch, result.period);
           result.minMag = dataset.map(p => p.yMin).reduce((min, cur) => Math.min(min, cur), result.minMag);
           result.maxMag = dataset.map(p => p.yMax).reduce((max, cur) => Math.max(max, cur), result.maxMag);
-          result.sessionPlotPoints.push(dataset);
-          result.sessionNames.push(`Session: ${session.session}`);
+          result.plotPoints.push(dataset);
+          result.names.push(`Session: ${session.session}`);
         }
 
         return result;
       }),
-      catchError(err => {this.messagesService.showErrors(err.message); return throwError(err); }),
       publishReplay(1),
       refCount()
     );
   }
 
-  renderChart(value: ChartData, date: Date): void {
-    this.starname = value.starname;
-    this.lineChartData = [];
+  captureCursor(session: SessionData, date: Date): CursorData {
+    const result = {} as CursorData;
+    result.plotPoints = [];
+    result.names = [];
 
-    const cursorPlotPoints = [];
-    const cursorNames = [];
-
-    const avgMag = isFinite(value.minMag) ? (value.minMag + value.maxMag) / 2 : 0;
-    const errMag = isFinite(value.minMag) ? (value.maxMag - value.minMag) / 2 : 1;
+    const avgMag = isFinite(session.minMag) ? (session.minMag + session.maxMag) / 2 : 0;
+    const errMag = isFinite(session.minMag) ? (session.maxMag - session.minMag) / 2 : 1;
 
     let jd = U235AstroClock.calculateJD(U235AstroClock.calculateDayFraction(date), U235AstroClock.calculateJD0FromDate(date));
 
-    cursorPlotPoints.push(createPlotPoints(jd, value.epoch, value.period, avgMag, errMag));
-    cursorNames.push(`Now: ${date.toLocaleTimeString()}`);
+    result.plotPoints.push(createPlotPoints(jd, session.epoch, session.period, avgMag, errMag));
+    result.names.push(`Now: ${date.toLocaleTimeString()}`);
 
     jd += 2 / 24;
     date = U235AstroClock.calculateDate(jd);
-    cursorPlotPoints.push(createPlotPoints(jd, value.epoch, value.period, avgMag, errMag));
-    cursorNames.push(`Now+2h: ${date.toLocaleTimeString()}`);
+    result.plotPoints.push(createPlotPoints(jd, session.epoch, session.period, avgMag, errMag));
+    result.names.push(`Now+2h: ${date.toLocaleTimeString()}`);
 
-    for (let i = 0; i < value.sessionNames.length; i++) {
-      this.lineChartData.push({
-        data: value.sessionPlotPoints[i],
-        label: value.sessionNames[i],
+    return result;
+  }
+
+  renderChart(session: SessionData, cursor: CursorData): ChartData {
+    const result = {} as ChartData;
+    result.starname = session.starname;
+    result.lineChartData = [];
+    result.lineChartColors = [];
+
+    for (let i = 0; i < session.names.length; i++) {
+      result.lineChartData.push({
+        data: session.plotPoints[i],
+        label: session.names[i],
         showLine: false,
         fill: false,
         errorBarColor: 'green',
         errorBarWhiskerColor: 'green',
         errorBarWhiskerSize: 6
       });
-      this.lineChartColors.push({
+      result.lineChartColors.push({
         borderColor: 'green',
         backgroundColor: 'rgba(255,255,0,0.28)'
       });
     }
 
-    this.lineChartData.push({
-      data: cursorPlotPoints[0],
-      label: cursorNames[0],
+    result.lineChartData.push({
+      data: cursor.plotPoints[0],
+      label: cursor.names[0],
       showLine: false,
       fill: false,
       errorBarColor: 'red',
       errorBarWhiskerColor: 'red',
       errorBarWhiskerSize: 6
     });
-    this.lineChartColors.push({
+    result.lineChartColors.push({
       borderColor: 'red',
       backgroundColor: 'rgba(255,255,0,0.28)'
     });
 
-    this.lineChartData.push({
-      data: cursorPlotPoints[1],
-      label: cursorNames[1],
+    result.lineChartData.push({
+      data: cursor.plotPoints[1],
+      label: cursor.names[1],
       showLine: false,
       fill: false,
       errorBarColor: 'blue',
       errorBarWhiskerColor: 'blue',
       errorBarWhiskerSize: 6
     });
-    this.lineChartColors.push({
+    result.lineChartColors.push({
       borderColor: 'blue',
       backgroundColor: 'rgba(255,255,0,0.28)'
     });
+
+    return result;
   }
 
   updateTime() {
@@ -190,8 +204,18 @@ export class VarStarPhasePlotComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle(this.browserTitle);
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    const data$ = this.loadingService.showLoadingUntilCompleted(this.captureChart());
-    this.chart$ = combineLatest(data$, this.date$).pipe(map(([data, date]) => { this.renderChart(data, date); return data; }));
+
+    const session$ = this.loadingService.showLoadingUntilCompleted(this.captureSession().pipe(
+      catchError(err => {this.messagesService.showErrors(err.message); return throwError(err); })
+    ));
+    const cursor$ = combineLatest(session$, this.date$).pipe(
+      map(([session, date]) => this.captureCursor(session, date)),
+      catchError(err => {this.messagesService.showErrors(err.message); return throwError(err); })
+    );
+    this.chart$ = combineLatest(session$, cursor$).pipe(
+      map(([session, cursor]) => this.renderChart(session, cursor)),
+      catchError(err => {this.messagesService.showErrors(err.message); return throwError(err); })
+    );
   }
 
 }
@@ -227,15 +251,15 @@ function createPlotPoints(jd: number, epoch: number, period: number, mag: number
 function createPlotPointsForObservation(observation: Observation, epoch: number, period: number): PlotPoint[] {
   const jd = parseFloat(observation.jd);
   if (isNaN(jd)) {
-    throw new Error('jd is not a number in Observation');
+    throw new Error('Phase Plot createPlotPointsForObservation(): Jd is not a number');
   }
   const mag = parseFloat(observation.mag);
   if (isNaN(mag)) {
-    throw new Error('mag is not a number in Observation');
+    throw new Error('Phase Plot createPlotPointsForObservation(): Mag is not a number');
   }
   const err = parseFloat(observation.err);
   if (isNaN(err)) {
-    throw new Error('err is not a number in Observation');
+    throw new Error('Phase Plot createPlotPointsForObservation(): Err is not a number');
   }
   return createPlotPoints(jd, epoch, period, mag, err);
 }

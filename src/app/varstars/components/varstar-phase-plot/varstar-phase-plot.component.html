@@ -1,16 +1,16 @@
 <section class="section">
     <div class="container">
-        <ng-container *ngIf="chart$ | async">
+        <ng-container *ngIf="(chart$ | async) as chart">
             <div class="columns">
                 <div class="column">
-                    <app-varstar-nav-bar [starname]="starname" [id]="id"></app-varstar-nav-bar>
+                    <app-varstar-nav-bar [starname]="chart.starname" [id]="id"></app-varstar-nav-bar>
                 </div>
             </div>
             <div class="chart-wrapper">
                 <canvas baseChart 
-                    [datasets]="lineChartData" 
+                    [datasets]="chart.lineChartData" 
                     [options]="lineChartOptions"
-                    [colors]="lineChartColors" 
+                    [colors]="chart.lineChartColors" 
                     [legend]="lineChartLegend" 
                     [chartType]="lineChartType" 
                     [plugins]="lineChartPlugins">
