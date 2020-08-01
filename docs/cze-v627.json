@@ -24,9 +24,10 @@
                     "comparison at 0.05 magnitudes.",
                 "<\/p>",
                 "<p>",
-                    "NOTE: The period is listed in catalogs as 2 hours which is odd in that usually the period is known to ",
+                    "NOTE: The period is listed in catalogs as 2 hours which is odd in that it is usually known with ",
                     "greater accuracy. That was a red flag. After further analysis I concluded that the period is now ",
-                    "closer to 2.1 hours. This is now reflected in the Phase Plot.",
+                    "approximately to 2.1 hours. This is now reflected in the Phase Plot. Also note that the 10 minute data gap ",
+                    "is due to passing clouds.",
                 "<\/p>"
             ]
         },
