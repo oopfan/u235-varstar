@@ -1,4 +1,13 @@
 {
+    "cze-v627": {
+        "varstar": "Cze V627",
+        "vartype": "DSCT",
+        "constellation": "Cygnus",
+        "ra2000": "20 50 08.46",
+        "de2000": "+37 31 42.0",
+        "period": "0.083333333",
+        "epoch": "2459062.5"
+    },
     "hat-p-5-b": {
         "varstar": "Exoplanet HAT-P-5 b",
         "vartype": "X",
