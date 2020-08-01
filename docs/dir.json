@@ -5,8 +5,8 @@
         "constellation": "Cygnus",
         "ra2000": "20 50 08.46",
         "de2000": "+37 31 42.0",
-        "period": "0.0875",
-        "epoch": "2459062.481667"
+        "period": "0.088",
+        "epoch": "2459062.472917"
     },
     "hat-p-5-b": {
         "varstar": "Exoplanet HAT-P-5 b",
