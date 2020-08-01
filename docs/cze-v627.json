@@ -22,6 +22,11 @@
                     "saturating any given pixel. Exoplanets greatly benefit from this technique. An easy exoplanet causes ",
                     "a magnitude fluxuation of about 0.02 magnitudes. Many others have smaller amplitude. CzeV627 is large by ",
                     "comparison at 0.05 magnitudes.",
+                "<\/p>",
+                "<p>",
+                    "NOTE: The period is listed in catalogs as 2 hours which is odd in that usually the period is known to ",
+                    "greater accuracy. That was a red flag. After further analysis I concluded that the period is now ",
+                    "closer to 2.1 hours. This is now reflected in the Phase Plot.",
                 "<\/p>"
             ]
         },
