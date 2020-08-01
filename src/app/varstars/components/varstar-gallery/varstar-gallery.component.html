@@ -7,10 +7,12 @@
                 </div>
             </div>
             <ng-container *ngIf="(gallery$ | async) as gallery">
-                <div class="is-clearfix" *ngFor="let item of gallery">
-                    <img style="padding-right: 10px;" class="is-pulled-left" [src]="galleryUrl+item.image" alt="Image goes here" />
-                    <div class="content" [innerHTML]="item.content.join('')"></div>
-                    <br />
+                <div *ngFor="let item of gallery">
+                    <div class="is-clearfix">
+                        <img style="padding-right: 10px;" class="is-pulled-left" [src]="galleryUrl+item.image" alt="Image goes here" />
+                        <div class="content" [innerHTML]="item.content.join('')"></div>
+                        <br />
+                    </div>
                 </div>
             </ng-container>
         </ng-container>
